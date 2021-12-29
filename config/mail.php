@@ -32,6 +32,20 @@ return [
     |            "postmark", "log", "array"
     |
     */
+    'driver' => 'smtp',
+    'host' => 'smtp.gmail.com',
+    'port' => 587,
+    // 'from' => ['address' => 'abdelrhmanatwa@gmail.com', 'name' => 'abdelrhman'],
+    'encryption' => 'tls',
+    'username' => 'shwar3namaster@gmail.com',
+    'password' => 'hhokvuzzxfwumrzn',
+    'sendmail' => '/usr/sbin/sendmail -bs',
+    'pretend' => false,
+
+    'from' => [
+        'address' => env('MAIL_FROM_ADDRESS'),
+        'name' => env('MAIL_FROM_NAME'),
+    ],
 
     'mailers' => [
         'smtp' => [

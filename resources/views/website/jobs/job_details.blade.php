@@ -1,37 +1,6 @@
 @extends('layouts.site')
 @section('site_title', 'الوظائف')
 @section('content')
-    <!--  carousel-->
-    <div class="list-single-carousel-wrap fl-wrap" id="sec1">
-        <div class="fw-carousel fl-wrap full-height lightgallery">
-
-
-
-
-            <!-- slick-slide-item -->
-            <div class="slick-slide-item">
-                <div class="box-item">
-                    <img src="{{  url('/uploads/jobs/'.$data[0]->image) }}" alt="">
-                    <a href="{{  url('/uploads/jobs/'.$data[0]->image) }}" class="gal-link popup-image"><i
-                            class="fa fa-search"></i></a>
-                </div>
-            </div>
-            <div class="slick-slide-item">
-                <div class="box-item">
-                    <img src="{{  url('/uploads/jobs/'.$data[0]->image) }}" alt="">
-                    <a href="{{  url('/uploads/jobs/'.$data[0]->image) }}" class="gal-link popup-image"><i
-                            class="fa fa-search"></i></a>
-                </div>
-            </div>
-            <!-- slick-slide-item end -->
-
-
-
-        </div>
-        <div class="swiper-button-prev sw-btn"><i class="fa fa-long-arrow-left"></i></div>
-        <div class="swiper-button-next sw-btn"><i class="fa fa-long-arrow-right"></i></div>
-    </div>
-    <!--  carousel  end-->
 
 
         <section class="gray-section no-top-padding" dir="rtl">
@@ -47,8 +16,9 @@
                             <div class="list-single-header list-single-header-inside fl-wrap">
                                 <div class="container">
                                     <div class="list-single-header-item">
+                                        <img width="150px" height="150px" src="{{  url('/uploads/jobs/'.$data[0]->image) }}" style="position: absolute;top:0;left: 0;" >
                                         <div class="row">
-                                            <div class="col-md-8">
+                                            <div class="col-md-6">
                                                 <div class="list-single-header-item-opt fl-wrap">
                                                     <div class="list-single-header-cat fl-wrap">
                                                         @if ($data[0]->name)
@@ -59,7 +29,7 @@
                                                 <h2>{{$data[0]->title}} </h2>
                                                 <span class="section-separator"></span>
                                             </div>
-                                            <div class="col-md-4 text-right">
+                                            <div class="col-md-6 text-right">
                                                 <h3><span> العدد المطلوب : </span>{{ $data[0]->count }}</h3><br>
                                                 <h3><span>  نوع العمل : </span>{{ $data[0]->type }}</h3><br>
                                                 <h3><span>   ينتهي في : </span>{{ $data[0]->end_date }}</h3>

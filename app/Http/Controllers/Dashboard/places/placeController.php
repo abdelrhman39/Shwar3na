@@ -19,6 +19,9 @@ use App\Models\Location;
 use App\Models\SubCategory;
 use App\Models\PlaceDiscount;
 use App\Models\PlaceGallary;
+use App\Models\Product;
+use App\Models\Order_don;
+use App\Models\OrdersProducts;
 
 class placeController extends Controller
 {
@@ -26,10 +29,10 @@ class placeController extends Controller
     public function places_data(){
 
         $data = Place::Select()->get();
-
         $waiting_places = Place::Select()->where('state' , 'wait')->get();
+        $non_active_places = Place::Select()->where('state' , 'non-active')->get();
 
-        return view('dashboard.places.show', ['data' => $data, 'waiting_places' => $waiting_places]);
+        return view('dashboard.places.show', ['data' => $data, 'waiting_places' => $waiting_places,'non_active_places'=>$non_active_places]);
     }
 
     public function place_features(Request $request){
@@ -135,15 +138,25 @@ class placeController extends Controller
 
         $place_name = Place::where('id', $place_id)->value('name_ar');
 
-        $discounds = PlaceDiscount::Selection()->where('place_id' , $place_id)->get();
+        $discounds = PlaceDiscount::Select()->where('place_id' , $place_id)->get();
 
         $details = Place::Select()->where('places.id' , $place_id)->first();
 
-
+        $PlaceProducts = Product::Selection()->where('place_id' , $place_id)->get();
         $gallary = PlaceGallary::Selection()->where('place_id', $place_id)->get();
 
-        return view('dashboard.places.placeDetails', ['data' => $data, "place_id" => $place_id, 'place_name' => $place_name,
-                                                      'discounds' => $discounds , 'details' => $details, 'gallary' => $gallary]);
+        $PlaceOrders = Order_don::select()
+        ->join('orders_products','orders_products.id','=','orders_don.order_id')
+        ->join('products','products.place_id','=','orders_products.place_id')
+        ->join('users','users.id','=','orders_don.user_id')
+        ->select('orders_don.*','orders_products.quantity','products.name As product_name','orders_products.place_id','products.old_price','products.new_price','products.main_image' ,'users.name')
+        ->where('orders_products.place_id',$place_id)
+        ->where('orders_don.type','product')->get();
+
+        // dd($PlaceOrders);
+
+        return view('dashboard.places.placeDetails', ['PlaceOrders'=>$PlaceOrders,'data' => $data, "place_id" => $place_id, 'place_name' => $place_name,
+                                                      'discounds' => $discounds , 'details' => $details, 'gallary' => $gallary,'PlaceProducts'=>$PlaceProducts]);
     }
 
     public function add_newDay($place_id, Request $request){
@@ -201,10 +214,64 @@ class placeController extends Controller
 
     public function Accept_place($place_id){
 
-        $updateData = Place::where('id' , $place_id)->update(['state' => 'accept']);
+        $updateData = Place::where('id' , $place_id)->get();
 
-        return redirect()->route('admin.places')->with('success' , "تم قبول المحل بنجاح");
+        $state = 'accept';
+        if($updateData[0]->state == 'accept'){
+            $state = 'wait';
+        }
+        $updateData = Place::where('id' , $place_id)->update(['state' => ''.$state.'']);
+
+        if($state == 'accept'){
+            return redirect()->route('admin.places')->with('success' , "تم قبول المحل بنجاح");
+        }else{
+            return redirect()->route('admin.places')->with('success' , "تم وضع المحل قائمة الانتظار والمراجعه  ");
+        }
     }
+
+    public function Accept_product($product_id){
+
+        $updateData = Product::where('id' , $product_id)->get();
+
+        $place = $updateData[0]->place_id;
+
+        $is_active = 1;
+        if($updateData[0]->is_active == 1){
+            $is_active = 0;
+        }
+
+        $updateData = Product::where('id' , $product_id)->update(['is_active' => ''.$is_active.'']);
+
+        if($is_active == 1){
+            return redirect()->route('admin.place.details',$place)->with('success' , "تم قبول المنتج بنجاح");
+        }else{
+            return redirect()->route('admin.place.details',$place)->with('success' , "تم وضع المنتج قائمة الانتظار والمراجعه  ");
+        }
+    }
+
+    public function Accept_Copouns($Copoun_id){
+
+        $updateData = PlaceDiscount::where('id' , $Copoun_id)->get();
+
+        $place = $updateData[0]->place_id;
+
+
+        $is_active = 1;
+        if($updateData[0]->is_active == 1){
+            $is_active = 0;
+        }
+
+
+        $updateData = PlaceDiscount::where('id' , $Copoun_id)->update(['is_active' => ''.$is_active.'']);
+
+        if($is_active == 1){
+            return redirect()->route('admin.place.details',$place)->with('success' , "تم قبول العرض بنجاح");
+        }else{
+            return redirect()->route('admin.place.details',$place)->with('success' , "تم وضع العرض قائمة الانتظار والمراجعه  ");
+        }
+    }
+
+
 
     public function Add_Copouns($place_id, Request $request){
         $created_at = carbon::now()->toDateTimeString();
@@ -223,6 +290,7 @@ class placeController extends Controller
         $add->new_price = $request->new_price;
         $add->used = 0;
         $add->place_id = $place_id;
+        $add->is_active = 0;
         $add->created_at = $dateTime;
         $add->save();
 
@@ -235,6 +303,14 @@ class placeController extends Controller
         $place_id = PlaceDiscount::where('id' , $copounID)->value('place_id');
         $deleteDay = PlaceDiscount::where('id', $copounID)->delete();
         return redirect()->route('admin.place.details', $place_id)->with('success' , "تم مسح الكوبون بنجاح");
+
+    }
+
+    public function destroy_Product( $ProductID){
+
+        $place_id = Product::where('id' , $ProductID)->value('place_id');
+        $deleteProduct = Product::where('id', $ProductID)->delete();
+        return redirect()->route('admin.place.details', $place_id)->with('success' , "تم مسح المنتج بنجاح");
 
     }
 
@@ -290,4 +366,75 @@ class placeController extends Controller
         return redirect()->route('admin.place.details', $place_id)->with('success' , "تم مسح الصوره بنجاح");
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Start State Order
+
+        public function cancel_order($orderID)
+        {
+            $updateOrder_don = Order_don::where('id' , $orderID)->update(['state' => 'cancel']);
+            if($updateOrder_don){
+                session()->flash('success','تم رفض الطلب بنجاح');
+            }else{
+                session()->flash('error','هناك خطأ ما , يرجي المحاوله مره اخري!');
+            }
+            return redirect()->back();
+        }
+
+
+        public function Accepted_order($orderID)
+        {
+            $updateOrder_don = Order_don::where('id' , $orderID)->update(['state' => 'Accepted']);
+            if($updateOrder_don){
+                session()->flash('success','تم قبول الطلب بنجاح');
+            }else{
+                session()->flash('error','هناك خطأ ما , يرجي المحاوله مره اخري!');
+            }
+            return redirect()->back();
+        }
+
+        public function Shipped_order($orderID)
+        {
+            $updateOrder_don = Order_don::where('id' , $orderID)->update(['state' => 'Shipped']);
+            if($updateOrder_don){
+                session()->flash('success','تم قبول وشحن الطلب بنجاح');
+            }else{
+                session()->flash('error','هناك خطأ ما , يرجي المحاوله مره اخري!');
+            }
+            return redirect()->back();
+        }
+
+
+        public function delivered_order($orderID)
+        {
+            $updateOrder_don = Order_don::where('id' , $orderID)->update(['state' => 'delivered']);
+            if($updateOrder_don){
+                session()->flash('success','تم تسليم الطلب بنجاح');
+            }else{
+                session()->flash('error','هناك خطأ ما , يرجي المحاوله مره اخري!');
+            }
+            return redirect()->back();
+        }
+
+        // End State Order
+
+
+
+
+
+
 }

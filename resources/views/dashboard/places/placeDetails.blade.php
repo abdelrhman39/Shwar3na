@@ -72,6 +72,11 @@
                                             <i class="icon-handbag"></i> المنتجات</a>
                                       </li>
 
+                                      <li class="nav-item">
+                                        <a class="nav-link"  data-toggle="tab" href="#orders" role="tab" style="color: #ff7e39" >
+                                            <i class="icon-handbag"></i> طلبات المحل</a>
+                                      </li>
+
                                     </ul>
                                     <div class="tab-content px-1 pt-1" >
                                       <div  class="tab-pane active" id="details"  role="tabpanel">
@@ -90,8 +95,13 @@
                                         @include('dashboard.places.placeGallary')
                                       </div>
                                       <div  class="tab-pane" id="products"  role="tabpanel">
-
+                                        @include('dashboard.places.placeProducts')
                                       </div>
+
+                                      <div  class="tab-pane" id="orders"  role="tabpanel">
+                                        @include('dashboard.places.placeOrders')
+                                      </div>
+
                                     </div>
                                   </div>
 

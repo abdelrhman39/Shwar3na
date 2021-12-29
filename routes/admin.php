@@ -11,6 +11,7 @@ use App\Http\Controllers\Dashboard\AreaLocationController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\SiteDataController;
 use App\Http\Controllers\Dashboard\places\placeController;
+use App\Http\Controllers\Site\products\ordersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +26,7 @@ use App\Http\Controllers\Dashboard\places\placeController;
 
 
 Route::group([ 'prefix' => 'admin','middleware' => 'guest:admin'], function() {
-    
+
     Route::get('/login', [LoginController::class, 'getLogin'])->name('get.dashboard.login');
     Route::post('/login', [LoginController::class, 'Login_admin'])->name('dashboard.login');
 
@@ -36,10 +37,19 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function() {
     Route::get('/dashboard', [AdminController::class , 'index'])->name('dashboard.dashboard');
 
     Route::get('/users', [UserController::class , 'Users_page'])->name('admin.users');
-    
+
     Route::get('/aboutus', [SiteDataController::class , 'aboutUs_data'])->name('admin.aboutus');
 
     Route::post('/update_aboutUs', [SiteDataController::class , 'update_aboutUs'])->name('admin.aboutus.update');
+
+    Route::get('/team', [SiteDataController::class , 'team_data'])->name('admin.team');
+    Route::post('/add-team', [SiteDataController::class , 'add_team'])->name('admin.add_team');
+    Route::get('/delete-team/{id}', [SiteDataController::class , 'delete_team'])->name('admin.delete-team');
+
+    Route::get('/testimonials', [SiteDataController::class , 'testimonials'])->name('admin.testimonials');
+    Route::get('/delete-testimonials/{id}', [SiteDataController::class , 'delete_testimonials'])->name('admin.delete-testimonials');
+    Route::get('/approv-testimonials/{id}', [SiteDataController::class , 'approv_testimonials'])->name('admin.approv-testimonials');
+
 
     Route::group(['prefix' => 'Categories'], function () {
 
@@ -102,8 +112,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function() {
         Route::post('add_newDay{id}', [placeController::class , 'add_newDay'])->name('admin.place.addDay');
         Route::get('/destroyDay{id}', [placeController::class , 'destroy_Day'])->name('admin.destroy.day');
         Route::get('/Accept_place{id}', [placeController::class , 'Accept_place'])->name('admin.place.accept');
+
+        Route::get('/Accept_product{id}', [placeController::class , 'Accept_product'])->name('admin.product.accept');
+        Route::get('/Accept_Copouns{id}', [placeController::class , 'Accept_Copouns'])->name('admin.Copouns.accept');
+
+
         Route::post('add_newCopoun{id}', [placeController::class , 'Add_Copouns'])->name('admin.place.addCopoun');
         Route::get('/destroyCopoun{id}', [placeController::class , 'destroy_Copoun'])->name('admin.destroy.copoun');
+        Route::get('/destroyProduct{id}', [placeController::class , 'destroy_Product'])->name('admin.destroy.product');
         Route::post('update_Video{id}', [placeController::class , 'update_Video'])->name('admin.place.updateVideo');
         Route::post('add_newImage{id}', [placeController::class , 'Add_GallaryImages'])->name('admin.place.addImage');
         Route::get('/destroyImage{id}', [placeController::class , 'destroy_Image'])->name('admin.destroy.image');
@@ -120,7 +136,39 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function() {
         // Route::post('/location/new{id}',  [AreaLocationController::class , 'add_location'])->name('admin.location.add');
         // Route::get('/location/destroy{id}', [AreaLocationController::class , 'destroy_location'])->name('admin.location.destroy');
 
+
+
+
+
+
+        // Start State Order
+        Route::get('/cancel_order/{id}', [placeController::class, 'cancel_order'])->name('cancel_order');
+        Route::get('/Accepted_order/{id}', [placeController::class, 'Accepted_order'])->name('Accepted_order');
+        Route::get('/Shipped_order/{id}', [placeController::class, 'Shipped_order'])->name('Shipped_order');
+        Route::get('/delivered_order/{id}', [placeController::class, 'delivered_order'])->name('delivered_order');
+
+        // End State Order
+
+
     });
+
+    // Start Wallet
+    Route::post('add-Money/{id}', [UserController::class, 'addMoney'])->name('admin.addMoney');
+
+    // End Wallet
+
+
+    // Start import/Export Users
+    Route::get('importExportUsers', [UserController::class, 'importExportUsers']);
+    Route::get('export-users', [UserController::class, 'export_users'])->name('export_users');
+    Route::post('import-users', [UserController::class, 'import_users'])->name('import_users');
+    // ENd import/Export Users
+
+    // Start import/Export Places
+    Route::get('export-places', [UserController::class, 'export_places'])->name('export_places');
+    Route::post('import-places', [UserController::class, 'import_places'])->name('import_places');
+    // ENd import/Export Places
+
 });
 
 

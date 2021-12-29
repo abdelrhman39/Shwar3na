@@ -27,6 +27,7 @@ use App\Models\Product;
 use App\Models\ProductImages;
 use App\Models\OrdersProducts;
 use App\Models\OrdersCoupons;
+use App\Models\Order_don;
 use Auth;
 
 
@@ -50,6 +51,22 @@ class UserProductsController extends Controller
 
         $all_category = Category::Selection()->get();
         $about_data = AboutUs::first();
+
+        // $user = User::first();
+        // $user->balance; // 0
+
+
+        // $user->deposit(10);
+        // $user->balance; // 10
+
+        // $user->withdraw(1);
+        // $user->balance; // 9
+
+        // dd($user->balance);
+        // $user->forceWithdraw(200, ['description' => 'payment of taxes']);
+        // // -191
+
+
 
 
         return view('website.profile.products.index', ['data_products' => $data_products,'all_category' => $all_category,'about_data' =>  $about_data]);
@@ -92,11 +109,11 @@ class UserProductsController extends Controller
     $validated = $request->validate([
         'name' => 'required|max:20',
         'description' => 'required|max:200',
-        'old_price' => 'required',
-        'new_price' => '',
+        'old_price' => 'required|numeric',
+        'new_price' => 'nullable|numeric|max:'.($request['old_price']-1),
         'place_id' => 'required',
         'Equip'=> 'required',
-        'main_image'=> 'image|mimes:png,jpg,jpeg,gif',
+        'main_image'=> 'required|image|mimes:png,jpg,jpeg,gif',
     ]);
 
     $place_id = $request->place_id;
@@ -121,7 +138,7 @@ class UserProductsController extends Controller
         $i =0;
         foreach( $request->file('images') as $img){
             $i++;
-            if($i >4){
+            if($i >6){
                 break;
             }
             $Images =  new ProductImages;
@@ -157,7 +174,6 @@ class UserProductsController extends Controller
         ->where('products.place_id','=',$id)->paginate(5);
 
 
-        // dd(Auth::user()->id);
 
         $all_category = Category::Selection()->get();
         $about_data = AboutUs::first();
@@ -292,7 +308,15 @@ class UserProductsController extends Controller
         $about_data = AboutUs::first();
 
 
+        $id_updete = Product::findorfail($id);
+        file::delete('uploads/products/'.$id_updete->main_image);
 
+        $product_gallary= ProductImages::Select()
+        ->where('product_id',$id)->get();
+
+        foreach($product_gallary as $img){
+            file::delete('uploads/products/'.$img->image);
+        }
         $result = Product::where('id', $id)->delete();
         if($result){
 

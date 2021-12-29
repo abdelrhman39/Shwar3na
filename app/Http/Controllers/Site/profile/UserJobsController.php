@@ -85,7 +85,6 @@ class UserJobsController extends Controller
             'place_id' => 'required',
         ]);
 
-
         $add =  new Job;
         $add->title = $request->title;
         $add->description = $request->description;
@@ -97,7 +96,7 @@ class UserJobsController extends Controller
         $add->requirment_job = $request->requirment_job;
         $add->jobCat_id = $request->jobCat_id;
         $add->sallary = $request->sallary;
-        $add->is_active = 'wait';
+        $add->is_active = 0;
         $add->user_id = $request->user_id;
         $add->place_id = $request->place_id;
         $add->created_at = $dateTime;
@@ -196,7 +195,7 @@ class UserJobsController extends Controller
             $img = $request->file('image');
             $extension = $img->extension();
             $newName= uniqid('',true).'.'.$extension;
-            $path = 'uploads/places';
+            $path = 'uploads/jobs';
             $final = $img->move($path,$newName);
             $validate['image'] = $newName;
         }else{
@@ -212,7 +211,7 @@ class UserJobsController extends Controller
             'count' => $request->count,
             'end_date' => $request->end_date,
             'type' => $request->type,
-            'image' => $validate['image'],
+            'image' =>  $validate['image'],
             'requirment_job'=> $request->requirment_job,
             'jobCat_id'=> $request->jobCat_id,
             'sallary'=> $request->sallary,

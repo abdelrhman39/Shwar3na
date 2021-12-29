@@ -45,9 +45,10 @@ class JobsController extends Controller
 
         if(Auth::user() != NULL){
             $order_count = OrdersProducts::select()
-            ->join('Products','Products.id','=','orders_products.id')
+            ->join('Products','Products.id','=','orders_products.product_id')
             ->join('users','users.id','=','orders_products.user_id')
-            ->where('user_id',Auth::user()->id)->get();
+            ->where('user_id',Auth::user()->id)
+            ->where('orders_products.order_don',0)->get();
 
             $orders_coupons  = OrdersCoupons::select()
                 ->join('place_discounts','place_discounts.id','=','orders_coupons.discounts_id')
@@ -120,11 +121,19 @@ class JobsController extends Controller
         $about_data = AboutUs::first();
         if(Auth::user() != NULL){
             $order_count = OrdersProducts::select()
-            ->join('Products','Products.id','=','orders_products.id')
-            ->join('users','users.id','=','orders_products.user_id')
-            ->where('user_id',Auth::user()->id)->get();
+                ->join('products','products.id','=','orders_products.product_id')
+                ->join('users','users.id','=','orders_products.user_id')
+                ->where('user_id',Auth::user()->id)
+                ->where('orders_products.order_don',0)->get();
 
-            $count_orders= count($order_count);
+                $orders_coupons  = OrdersCoupons::select()
+                ->join('place_discounts','place_discounts.id','=','orders_coupons.discounts_id')
+                ->join('users','users.id','=','orders_coupons.user_id')
+                ->select('orders_coupons.*','users.id as user_id','place_discounts.text','place_discounts.title','place_discounts.image',
+                'place_discounts.code','place_discounts.old_price','place_discounts.new_price','place_discounts.expired_date')
+                ->where('user_id',Auth::user()->id)->get();
+
+                $count_orders= count($order_count)+ count($orders_coupons);
             return view('website.jobs.job_details', ['count_orders'=>$count_orders,'data' => $data,'all_category' => $all_category,'about_data' =>  $about_data]);
         }
         return view('website.jobs.job_details', ['data' => $data,'all_category' => $all_category,'about_data' =>  $about_data]);

@@ -45,6 +45,13 @@
                                             class="fa fa-trash-o"></i></a></li>  --}}
                             </ul>
                         </div>
+
+                            @if ($copoun->is_active == 1)
+                            <span class="accept accept-active">Active</span>
+                            @else
+                            <span class="accept">Not Active</span>
+                            @endif
+                        </span>
                     </div>
                 </div>
 

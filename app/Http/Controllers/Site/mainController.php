@@ -12,6 +12,7 @@ use App\Models\Place;
 use App\Models\PlaceTags;
 use App\Models\OrdersProducts;
 use App\Models\OrdersCoupons;
+use App\Models\Testimonials;
 
 
 
@@ -27,7 +28,7 @@ class mainController extends Controller
 
         if(Auth::user() != NULL){
             $order_count = OrdersProducts::select()
-            ->join('Products','Products.id','=','orders_products.id')
+            ->join('Products','Products.id','=','orders_products.product_id')
             ->join('users','users.id','=','orders_products.user_id')
             ->where('user_id',Auth::user()->id)->get();
 
@@ -39,6 +40,9 @@ class mainController extends Controller
                 ->where('user_id',Auth::user()->id)->get();
 
             $count_orders= count($order_count)+count($orders_coupons);
+
+
+
 
             return view('website.Home.index', ['count_orders'=>$count_orders,'all_category' => $all_category, 'about_data' =>  $about_data]);
 
@@ -150,6 +154,21 @@ class mainController extends Controller
             'posts' => $posts,
 
         ]);
+    }
+
+    public function add_testimonials(Request $request)
+    {
+
+        $validate = $request->validate([
+            'comment' => 'required|string|regex:/[a-zA-Z]{0,}[0-9]{0,}/',
+        ]);
+
+        $add = new Testimonials;
+        $add->user_id	= Auth::user()->id;
+        $add->comment = $validate['comment'];
+        $add->is_active = 0;
+        $add->save();
+        return redirect()->back()->with('success','تم اضافة رأيك بنجاح');
     }
 
 }

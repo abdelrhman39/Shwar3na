@@ -54,7 +54,7 @@ class MyPlaceController extends Controller
             'address' => 'required',
             'price_range' => 'required|numeric',
             'Category_id'=> 'required|numeric|exists:category,id',
-            'Facebook' => 'required',
+            'Facebook' => '',
             'Twitter' => '',
             'Instagram'=> '',
             'City' => 'required|numeric|exists:city,id',
@@ -268,11 +268,11 @@ class MyPlaceController extends Controller
 
         // $result = Place::where('id', $id)->delete();
 
-        $result = Place::where('id' , $id)->update(['state' => 'wait']);
+        $result = Place::where('id' , $id)->update(['state' => 'non-active']);
 
         if($result){
 
-            session()->flash('success','تم إلغاء نشاط المحل بنجاح');
+            session()->flash('success','تم إلغاء نشاط المحل بنجاح , وسيتم الحذف قريبا');
             return redirect(url('profileDashboard'))->with(['all_category' => $all_category , "about_data" => $about_data, "myPlaces" => $myPlaces]);
         }else{
             session()->flash('error','هناك خطأ ما , يرجي المحاوله مره اخري!');

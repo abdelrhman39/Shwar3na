@@ -15,7 +15,7 @@
 
 
             <li class="nav-item  ">
-                   
+
               <a href=""><i class="icon-grid"></i>
                 <span class="menu-title" data-i18n="nav.dash.main">الأقسام </span>
                 <span
@@ -36,7 +36,7 @@
             </li>
 
             <li class="nav-item  ">
-                   
+
               <a href=""><i class="la la-map"></i>
                 <span class="menu-title" data-i18n="nav.dash.main">المناطق </span>
                 {{-- <span class="badge badge badge-info badge-pill float-right mr-2">{{App\Models\SubCity::count()}}</span> --}}
@@ -47,22 +47,25 @@
               </ul>
             </li>
 
-            
-               
+
+
               <li class="nav-item"><a href=""><i class="ft-globe"></i>
                      <span class="menu-title" data-i18n="nav.dash.main">تفاصيل الموقع </span>
                      </a>
                      <ul class="menu-content">
                      <li class="{{  request()->routeIs('admin.aboutus') ? 'active' : '' }} "><a class="menu-item" href="{{route('admin.aboutus')}}" data-i18n="nav.dash.ecommerce"> عن الشركة </a>
                      </li>
-                     {{--  <li><a class="menu-item" href="" data-i18n="nav.dash.crypto">أضافة
+                      <li><a class="menu-item {{  request()->routeIs('admin.team') ? 'active' : '' }} " href="{{route('admin.team')}}" data-i18n="nav.dash.crypto">أضافة
                             فريق </a>
-                     </li>  --}}
+                     </li>
+                     <li><a class="menu-item {{  request()->routeIs('admin.testimonials') ? 'active' : '' }} " href="{{route('admin.testimonials')}}" data-i18n="nav.dash.crypto">
+                        رأي العملاء في شوراعنا </a>
+                 </li>
                      </ul>
               </li>
 
               <li class="nav-item  ">
-                   
+
                   <a href=""><i class="la la-home"></i>
                      <span class="menu-title" data-i18n="nav.dash.main"> المحلات </span>
                      <span class="badge badge badge-info badge-pill float-right mr-2">{{App\Models\Place::count()}}</span>
@@ -74,7 +77,10 @@
                      </li>
                   </ul>
               </li>
-            {{--  
+
+
+              </li>
+            {{--
 
             <li class="nav-item"><a href=""><i class="la la-male"></i>
                 <span class="menu-title" data-i18n="nav.dash.main">المدربين  </span>

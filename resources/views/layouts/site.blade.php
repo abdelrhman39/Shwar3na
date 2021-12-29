@@ -19,8 +19,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA==" crossorigin="anonymous" />
     <link rel="stylesheet" href="{{asset('web_assets/css/owl.carousel.min.css')}}">
     <link rel="stylesheet" href="{{ asset('web_assets/css/owl.theme.default.min.css') }}">
-    <script src="{{asset('admin/vendors/js/forms/select/select2.full.min.js')}}" type="text/javascript"></script>
-    <script src="{{asset('admin/js/scripts/forms/select/form-select2.js')}}" type="text/javascript"></script>
+
+    <link rel="stylesheet" type="text/css" href="{{asset('admin/vendors/css/forms/selects/select2.min.css')}}">
 
     <!--=============== favicons ===============-->
     <link rel="shortcut icon" href="{{asset('uploads/icon.jpg')}}">
@@ -253,6 +253,9 @@
                                             <input name="remember_me" id="remember-me" type="checkbox" >
                                             <label for="check-a">تذكرنى</label>
                                         </div>
+                                        <div class="filter-tags">
+                                            <a href="{{ route('forget.password.get') }}">Forgot Password</a>
+                                        </div>
                                     </form>
                                     {{--  <div class="lost_password">
                                         <a href="#">Lost Your Password?</a>
@@ -311,6 +314,8 @@
                                     </div>
                                 </div>
                             </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -355,6 +360,9 @@
             toastr.error("{!! Session::get('error') !!}");
         </script>
         @endif
+
+        <script src="{{asset('admin/vendors/js/forms/select/select2.full.min.js')}}" type="text/javascript"></script>
+        <script src="{{asset('admin/js/scripts/forms/select/form-select2.js')}}" type="text/javascript"></script>
 
     </body>
 

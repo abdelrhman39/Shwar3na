@@ -10,3 +10,21 @@ NOTE:
 A FILE FOR RTL SUPPORT RELATED ONLY
 PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
 WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
+
+a.btn_delImg {
+    position: absolute;
+    top: 0;
+    z-index: 199;
+    background-color: #333;
+    padding: 10px;
+    border-radius: 10px 0px;
+    color: #fff;
+}
+a.btn_delImg i{
+    color:#fff!important;
+}
+
+.table td {
+    padding: 0.75rem 2rem;
+    white-space: nowrap;
+}

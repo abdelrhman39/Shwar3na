@@ -30,7 +30,7 @@
 
                             <div class="card">
                                 <div class="card-header">
-                                    <h4 class="card-title">جميع المطاعم</h4>
+                                    <h4 class="card-title">جميع المحلات</h4>
                                     <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                                     <div class="heading-elements">
                                       <ul class="list-inline mb-0">
@@ -47,6 +47,32 @@
 
                                 <div class="card-content">
                                   <div class="card-body card-dashboard">
+                                    <div class="row match-height">
+                                        <div class="col-lg-12 col-xl-6">
+                                          <div id="accordionWrap3" role="tablist" aria-multiselectable="true">
+                                            <div class="card collapse-icon accordion-icon-rotate">
+                                              <div id="heading31" class="card-header bg-success">
+                                                <a data-toggle="collapse" data-parent="#accordionWrap3" href="#accordion31" aria-expanded="false"
+                                                aria-controls="accordion31" class="card-title lead white">Import/Export Places Data </a>
+                                              </div>
+                                              <div id="accordion31" role="tabpanel" aria-labelledby="heading31" class="card-collapse collapse "
+                                              aria-expanded="false">
+                                                <div class="card-content">
+                                                  <div class="card-body">
+                                                    <form action="{{ route('import_places') }}" method="POST" enctype="multipart/form-data">
+                                                        @csrf
+                                                        <input type="file" name="file" class="form-control">
+                                                        <br>
+                                                        <button type="submit" class="btn btn-success">Import Places Data</button>
+                                                        <a class="btn btn-warning" href="{{ route('export_places') }}">Export Places Data</a>
+                                                    </form>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                    </div>
                                     <ul class="nav nav-tabs nav-top-border no-hover-bg" role="tablist"  >
                                       <li class="nav-item">
                                         <a class="nav-link active" data-toggle="tab" href="#allPlaces" role="tab" >
@@ -55,6 +81,10 @@
                                       <li class="nav-item">
                                         <a class="nav-link"  data-toggle="tab" href="#WaitPlaces" role="tab" >
                                             <i class="la la-flag"></i> المحلات المنتظرة</a>
+                                      </li>
+                                      <li class="nav-item">
+                                        <a class="nav-link"  data-toggle="tab" href="#non_active_places" role="tab" >
+                                            <i class="la la-flag"></i> محلات قام العميل بإلغاء تفعيلها</a>
                                       </li>
                                     </ul>
                                     <div class="tab-content px-1 pt-1" >
@@ -80,7 +110,7 @@
                                               @foreach($data as $each)
                                                     <tr>
                                                       <td>{{$each -> id}}</td>
-                                                      <td> <img class="rounded-circle " style="width: 70px; height: 70px;" src="/uploads/places/{{$each -> logo}}"></td>
+                                                      <td> <img class="rounded-circle " style="width: 70px; height: 70px;" src="{{url('uploads/places/'.$each->logo)}}"></td>
                                                       <td>{{$each -> name_ar}} - {{$each -> name_en}}</td>
                                                       <td>{{$each -> phone}}</td>
                                                       <td>{{$each -> email}}</td>
@@ -155,7 +185,16 @@
                                                       <td>
                                                           <div class="btn-group" role="group" aria-label="Basic example">
 
-                                                            <a href="{{route('admin.place.details', $each -> id)}}"
+                                                            @if ($each->state == 'accept')
+
+                                                            <a href="{{route('admin.place.accept', $each->id)}}"
+                                                                class="btn btn-outline-success btn-min-width box-shadow-3  mr-1 mb-1" style="height: 40px;">وضع المحل علي الانتظار</a>
+                                                            @else
+                                                                <a href="{{route('admin.place.accept', $each->id)}}"
+                                                                    class="btn btn-outline-success btn-min-width box-shadow-3  mr-1 mb-1" style="height: 40px;">قبول</a>
+
+                                                            @endif
+                                                            <a href="{{route('admin.place.details', $each->id)}}"
                                                                 class="btn btn-outline-primary btn-min-width box-shadow-3  mr-1 mb-1" style="height: 40px;">التفاصيل</a>
 
 
@@ -195,7 +234,7 @@
                                                 @foreach($waiting_places as $eachWait)
                                                     <tr>
                                                         <td>{{$eachWait -> id}}</td>
-                                                        <td> <img class="rounded-circle " style="width: 70px; height: 70px;" src="/uploads/places/{{$eachWait -> logo}}"></td>
+                                                        <td> <img class="rounded-circle " style="width: 70px; height: 70px;" src="{{url('uploads/places/'.$eachWait->logo)}}"></td>
                                                         <td>{{$eachWait -> name_ar}} - {{$eachWait -> name_en}}</td>
                                                         <td>{{$eachWait -> phone}}</td>
                                                         <td>{{$eachWait -> email}}</td>
@@ -224,6 +263,62 @@
                                             </tbody>
                                           </table>
                                       </div>
+
+                                      <div  class="tab-pane" id="non_active_places"  role="tabpanel">
+
+
+                                        <table class="table display nowrap table-striped table-bordered scroll-horizontal">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>الصورة</th>
+                                                <th> الأسم</th>
+                                                <th> التليفون</th>
+                                                <th> البريد الألكترونى </th>
+                                                <th>أسعار المحل</th>
+                                                <th>عدد الزيارات</th>
+                                                <th> وقت الأنشاء</th>
+
+                                                <th>الإجراءات</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            @isset($non_active_places)
+                                                @foreach($non_active_places as $eachWait)
+                                                    <tr>
+                                                        <td>{{$eachWait -> id}}</td>
+                                                        <td> <img class="rounded-circle " style="width: 70px; height: 70px;" src="{{url('uploads/places/'.$eachWait->logo)}}"></td>
+                                                        <td>{{$eachWait -> name_ar}} - {{$eachWait -> name_en}}</td>
+                                                        <td>{{$eachWait -> phone}}</td>
+                                                        <td>{{$eachWait -> email}}</td>
+                                                        <td>{{$eachWait -> price_range}}</td>
+                                                        <td>{{$eachWait -> views}}</td>
+                                                        <td>{{$eachWait -> created_at}}</td>
+
+
+                                                        <td>
+                                                            <div class="btn-group" role="group" aria-label="Basic example">
+
+                                                              <a href="{{route('admin.place.accept', $eachWait->id)}}"
+                                                                class="btn btn-outline-success btn-min-width box-shadow-3  mr-1 mb-1" style="height: 40px;">تفعيل</a>
+
+                                                                <a href="{{route('admin.place.details', $eachWait -> id)}}"
+                                                                  class="btn btn-outline-primary btn-min-width box-shadow-3  mr-1 mb-1" style="height: 40px;">التفاصيل</a>
+
+
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            @endisset
+
+
+                                            </tbody>
+                                          </table>
+                                      </div>
+
+
                                     </div>
                                   </div>
                                 </div>

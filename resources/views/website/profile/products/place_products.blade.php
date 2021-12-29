@@ -8,7 +8,7 @@
         {{-- {{ dd($data_products[0]) }} --}}
         <!-- dashboard-list end-->
         @if (count($data_products) == 0)
-            <a class="btn btn-info" style="margin-top: 10px;" href="{{ url('add-job/') }}"> اضف منتج  <i class="fas fa-shopping-basket"></i></a>
+            <a class="btn btn-info" style="margin-top: 10px;" href="{{ url('add-product/') }}"> اضف منتج  <i class="fas fa-shopping-basket"></i></a>
         @endif
 
             @foreach($data_products as $product)
@@ -42,12 +42,27 @@
 
                             <li><a class="del-btn" href="{{ url('products/'.$product->id) }}"> عرض المنتج  <i class="far fa-eye"></i></a>
                             </li>
+
+
                             {{--  <li><a href="#" class="del-btn">Delete <i
                                         class="fa fa-trash-o"></i></a></li>  --}}
                         </ul>
                     </div>
+
+
+
+                    @if ($product->is_active == 1)
+                        <span class="accept accept-active"> Active </span>
+                    @else
+                        <span class="accept">Not Active</span>
+                    @endif
+
+
                 </div>
             </div>
+
+
+
 
 
             @endforeach

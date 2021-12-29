@@ -10,6 +10,7 @@ use App\Http\Controllers\Manage\BaseController;
 use carbon\carbon;
 use App\Models\Place;
 use App\Models\User;
+use App\Models\Job;
 use App\Models\PlaceCategory;
 use App\Models\City;
 use App\Models\PlaceTime;
@@ -23,6 +24,7 @@ use App\Models\PlaceGallary;
 use App\Models\AboutUs;
 use App\Models\PlaceTags;
 use Auth;
+use App\Models\Product;
 use App\Models\OrdersProducts;
 use App\Models\OrdersCoupons;
 
@@ -37,20 +39,22 @@ class placesController extends Controller
     public function index()
     {
         $data = Place::Select()
-            ->join('locations', 'places.location_id', '=', 'locations.id')
             ->join('category', 'places.Category_id', '=', 'category.id')
             // ->join('users', 'places.user_id', '=', 'users.id')
-            ->select('places.*', 'locations.name As location', 'category.name As category_name')
-            ->where('places.state' , 'accept')->paginate(6);
+            ->select('places.*', 'category.name As category_name')
+            ->where('places.state' , 'accept')->Paginate(6);
+
+
 
             $all_category = Category::Selection()->get();
 
             $about_data = AboutUs::first();
             if(Auth::user() != NULL){
                 $order_count = OrdersProducts::select()
-                ->join('products','products.id','=','orders_products.id')
+                ->join('products','products.id','=','orders_products.product_id')
                 ->join('users','users.id','=','orders_products.user_id')
-                ->where('user_id',Auth::user()->id)->get();
+                ->where('user_id',Auth::user()->id)
+                ->where('orders_products.order_don',0)->get();
 
                 $orders_coupons  = OrdersCoupons::select()
                 ->join('place_discounts','place_discounts.id','=','orders_coupons.discounts_id')
@@ -122,15 +126,24 @@ class placesController extends Controller
             ->join('places', 'place_discounts.place_id', '=', 'places.id')
             ->where('place_discounts.place_id',$id)->get();
 
+        $place_products= Product::Select()
+            ->join('places', 'products.place_id', '=', 'places.id')
+            ->where('products.place_id',$id)->get();
+
+        $place_job= Job::Select()
+            ->join('places', 'jobs.place_id', '=', 'places.id')
+            ->where('jobs.place_id',$id)->get();
+
         $PlaceTags= PlaceTags::Select()->where('place_id','=',$id)->get();
 
 
             if(Auth::user() != NULL){
 
                 $order_count = OrdersProducts::select()
-                ->join('products','products.id','=','orders_products.id')
+                ->join('products','products.id','=','orders_products.product_id')
                 ->join('users','users.id','=','orders_products.user_id')
-                ->where('user_id',Auth::user()->id)->get();
+                ->where('user_id',Auth::user()->id)
+                ->where('orders_products.order_don',0)->get();
 
                 $orders_coupons  = OrdersCoupons::select()
                 ->join('place_discounts','place_discounts.id','=','orders_coupons.discounts_id')
@@ -143,13 +156,15 @@ class placesController extends Controller
 
                 return view('website.places.details_place', ['count_orders'=>$count_orders,'data' => $data,
                                                              'place_time' => $place_time,'place_disc'=>$place_disc,
+                                                             'place_products'=>$place_products,
+                                                             'place_job'=>$place_job,
                                                              'place_gallary' =>$place_gallary,'place_tags'=>$PlaceTags,
                                                              'all_category' => $all_category,'about_data' =>  $about_data]);
             }
 
 
 
-        return view('website.places.details_place', ['data' => $data,'place_time' => $place_time,'place_disc'=>$place_disc,'place_gallary' =>$place_gallary,'place_tags'=>$PlaceTags,'all_category' => $all_category,'about_data' =>  $about_data]);
+        return view('website.places.details_place', ['data' => $data,'place_time' => $place_time,'place_disc'=>$place_disc,'place_products'=>$place_products,'place_job'=>$place_job,'place_gallary' =>$place_gallary,'place_tags'=>$PlaceTags,'all_category' => $all_category,'about_data' =>  $about_data]);
     }
 
     /**

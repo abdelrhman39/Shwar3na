@@ -139,6 +139,10 @@
 
 <script src="{{asset('admin/js/scripts/tables/datatables/datatable-advanced.js')}}"
 type="text/javascript"></script>
+<script src="{{asset('admin/js/tables/datatable/buttons.bootstrap4.min.js')}}"
+  type="text/javascript"></script>
+<script src="{{asset('admin/js/scripts/tables/datatables-extensions/datatable-button/datatable-html5.js')}}"
+  type="text/javascript"></script>
 
 <script>
     $('#meridians1').timeDropper({

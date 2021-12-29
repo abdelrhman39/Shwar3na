@@ -109,13 +109,14 @@
                             <div class="list-main-wrap fl-wrap card-listing">
                                 <!-- listing-item -->
 
+
                             @isset($data)
                                 @foreach($data as $each)
 
                                     <div class="listing-item " dir="rtl">
                                         <article class="geodir-category-listing fl-wrap">
                                             <div class="geodir-category-img">
-                                                <img src="{{ asset('uploads/'.$each ->cover) }}" alt="{{$each->name_ar}}">
+                                                <img src="{{ asset('uploads/places/'.$each ->cover) }}" alt="{{$each->name_ar}}">
                                                 <div class="overlay"></div>
                                                 <div class="list-post-counter"><span>{{$each ->views}}</span><i class="fa fa-heart"></i>
                                                 </div>
@@ -123,11 +124,11 @@
                                             <div class="geodir-category-content fl-wrap">
                                                 <a class="listing-geodir-category" href="">{{ $each->category_name }}</a>
                                                 <div class="listing-avatar"><a href="places/{{$each ->id}}"><img
-                                                            src="http://localhost/shwar3na_laravel/uploads/{{$each->logo}}" alt="{{$each->name_ar}}"></a>
+                                                            src="{{asset('uploads/places/'.$each->logo) }}" alt="{{$each->name_ar}}"></a>
                                                     <span class="avatar-tooltip">تم الاضافه عن طريق <strong>{{$each->name_ar}}</strong></span>
                                                 </div>
                                                 <h3><a href="places/{{$each ->id}}">{{$each->name_ar}} - {{$each->name_en}}</a></h3>
-                                                <p>{{$each ->description}}.</p>
+                                                <p>{{ substr($each->description,0,100) }}......</p>
                                                 <div class="geodir-category-options fl-wrap">
                                                     <div class="listing-rating card-popup-rainingvis" data-starrating2="5">
                                                         <span>({{$each ->views}} reviews)</span>

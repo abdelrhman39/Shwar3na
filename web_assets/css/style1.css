@@ -7340,3 +7340,37 @@ div.table-title {
 }
 
 
+
+
+
+
+
+
+
+
+.btn_delImg{
+    position: absolute;
+    top:0;
+    z-index: 199;
+    background-color: #333;
+    padding: 10px;
+    border-radius: 10px 0px;
+    color: #fff;
+}
+.btn_addImg{
+    background-color: #333;
+    padding: 10px;
+    border-radius: 10px 0px;
+    color: #fff!important;
+}
+.btn_delImg i{
+    color: #fff!important;
+}
+
+
+span.order_don {
+    background-color: #f86420;
+    padding: 5px 10px;
+    border: 0;
+    border-radius: 50%;
+}

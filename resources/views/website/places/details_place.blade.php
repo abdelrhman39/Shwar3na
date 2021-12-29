@@ -108,10 +108,10 @@
                                         <i class="fa fa-user"></i>
                                         <div class="milestone-counter">
                                             <div class="stats animaper">
-                                                <div class="num" data-content="0" data-num="{{$data[0]->views}}">0</div>
+                                                <div class="num" data-content="0" data-num="{{ count($place_products) }}">0</div>
                                             </div>
                                         </div>
-                                        <h6>viewed customers</h6>
+                                        <h6>Products</h6>
                                     </div>
                                 </div>
                                 <!-- inline-facts end -->
@@ -137,10 +137,12 @@
                                 </div>
                                 <p>{{$data[0]->description}}.</p>
 
-                                <a href="#" class="btn transparent-btn float-btn">Visit Website <i
+                                @if ( $data[0]->website )
+                                <a href="{{ $data[0]->website }}" class="btn transparent-btn float-btn">Visit Website <i
                                         class="fa fa-angle-right"></i></a>
+                                @endif
 
-                                @if ($place_tags != Null)
+                                @if (count($place_tags) > 0)
 
                                     <span class="fw-separator"></span>
                                     <div class="list-single-main-item-title fl-wrap">
@@ -160,63 +162,6 @@
 
                                 @endif
                             </div>
-
-
-                            <div class="accordion">
-                                <a class="toggle act-accordion" href="#"> Details option <i
-                                        class="fa fa-angle-down"></i></a>
-                                <div class="accordion-inner visible">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in
-                                        pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur
-                                        nulla. Nulla posuere sapien vitae lectus suscipit, et pulvinar nisi
-                                        tincidunt. Aliquam erat volutpat. Curabitur convallis fringilla diam sed
-                                        aliquam. Sed tempor iaculis massa faucibus feugiat. In fermentum
-                                        facilisis massa, a consequat purus viverra.</p>
-                                </div>
-                                <a class="toggle" href="#"> Details option 2 <i
-                                        class="fa fa-angle-down"></i></a>
-                                <div class="accordion-inner">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in
-                                        pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur
-                                        nulla. Nulla posuere sapien vitae lectus suscipit, et pulvinar nisi
-                                        tincidunt. Aliquam erat volutpat. Curabitur convallis fringilla diam sed
-                                        aliquam. Sed tempor iaculis massa faucibus feugiat. In fermentum
-                                        facilisis massa, a consequat purus viverra.</p>
-                                </div>
-                                <a class="toggle" href="#"> Details option 3 <i
-                                        class="fa fa-angle-down"></i></a>
-                                <div class="accordion-inner">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas in
-                                        pulvinar neque. Nulla finibus lobortis pulvinar. Donec a consectetur
-                                        nulla. Nulla posuere sapien vitae lectus suscipit, et pulvinar nisi
-                                        tincidunt. Aliquam erat volutpat. Curabitur convallis fringilla diam sed
-                                        aliquam. Sed tempor iaculis massa faucibus feugiat. In fermentum
-                                        facilisis massa, a consequat purus viverra.</p>
-                                </div>
-
-                            </div>
-
-
-                            <!-- list-single-main-item-->
-                            @if ($data[0]->video != Null)
-
-                                <div class="list-single-main-item fl-wrap" id="sec3">
-                                    <div class="list-single-main-item-title fl-wrap">
-                                        <h3>Promo Video</h3>
-                                    </div>
-                                    <div class="iframe-holder fl-wrap">
-                                        <div class="resp-video">
-                                            <video width="100%" height="100%" controls>
-                                                <source src="{{ asset('uploads/places') }}/{{ $data[0]->video }}" type="video/mp4">
-                                                <source src="{{ asset('uploads/places') }}/{{ $data[0]->video }}" type="video/ogg">
-                                            </video>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            @endif
-
-
                         </div>
                     </div>
                     <!--box-widget-wrap -->
@@ -297,51 +242,6 @@
                             </div>
                             <!--box-widget-item end -->
 
-                            <!--box-widget-item -->
-                            <div class="box-widget-item fl-wrap">
-                                <div class="box-widget-item-header">
-                                    <h3>More from this employer : </h3>
-                                </div>
-                                <div class="box-widget widget-posts">
-                                    <div class="box-widget-content">
-                                        <ul>
-                                            <li class="clearfix">
-                                                <a href="#" class="widget-posts-img"><img src="images/all/1.jpg"
-                                                        alt=""></a>
-                                                <div class="widget-posts-descr">
-                                                    <a href="#" title="">Cafe "Lollipop"</a>
-                                                    <span class="widget-posts-date"><i
-                                                            class="fa fa-calendar-check-o"></i> 21 Mar 2017
-                                                    </span>
-                                                </div>
-                                            </li>
-                                            <li class="clearfix">
-                                                <a href="#" class="widget-posts-img"><img src="images/all/2.jpg"
-                                                        alt=""></a>
-                                                <div class="widget-posts-descr">
-                                                    <a href="#" title=""> Apartment in the Center</a>
-                                                    <span class="widget-posts-date"><i
-                                                            class="fa fa-calendar-check-o"></i> 7 Mar 2017
-                                                    </span>
-                                                </div>
-                                            </li>
-                                            <li class="clearfix">
-                                                <a href="#" class="widget-posts-img"><img src="images/all/3.jpg"
-                                                        alt=""></a>
-                                                <div class="widget-posts-descr">
-                                                    <a href="#" title="">Event in City Mol</a>
-                                                    <span class="widget-posts-date"><i
-                                                            class="fa fa-calendar-check-o"></i> 7 Mar 2017
-                                                    </span>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                        <a class="widget-posts-link" href="#">See All Listing<span><i
-                                                    class="fa fa-angle-right"></i></span></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--box-widget-item end -->
                         </div>
                     </div>
                     <!--box-widget-wrap end -->
@@ -426,6 +326,146 @@
     @endif
     <!-- section end -->
 
+
+    <!--section -->
+    @if (count($place_products) != 0)
+        <section class="gray-section">
+            <div class="container">
+                <div class="section-title">
+                    <h2>المنتجات</h2>
+                    <div class="section-subtitle">المنتجات</div>
+                    <span class="section-separator"></span>
+                    <p>كل المنتجات.</p>
+                </div>
+            </div>
+            <!-- carousel -->
+
+            <div class="list-carousel fl-wrap card-listing ">
+                <!--listing-carousel-->
+                <div class="listing-carousel  fl-wrap ">
+
+                    <!--slick-slide-item-->
+                    <?php $x=0; ?>
+                    @foreach($place_products as $each)
+                    <?php $x=0;$x++ ?>
+                        <div class="slick-slide-item" >
+                            <!-- listing-item -->
+                            <div class="listing-item " dir="rtl">
+                                <article class="geodir-category-listing fl-wrap">
+                                    <div class="geodir-category-img">
+                                        <img src="{{ asset('uploads/products/'.$each->main_image) }}" alt="{{$each->name}}">
+                                        <div class="overlay"></div>
+                                        <div class="list-post-counter"><span>{{$each ->rate}}</span><i class="fa fa-heart"></i>
+                                        </div>
+                                    </div>
+                                    <div class="geodir-category-content fl-wrap">
+                                        <a class="listing-geodir-category" href="">{{ $each->new_price }} $</a>
+                                        <div class="listing-avatar"><a href="{{$each->place_id}}"><img
+                                                    src="{{ asset('uploads/products/'.$each->main_image) }}" alt="{{$each->name}}"></a>
+                                            <span class="avatar-tooltip">تم الاضافه عن طريق <strong>{{$each->name}}</strong></span>
+                                        </div>
+                                        <h3><a >{{$each->name}} </a></h3>
+                                        {{-- <p>{{$each ->description}}.</p> --}}
+                                        <div class="geodir-category-options fl-wrap">
+
+                                            <div class="geodir-category-location">
+                                                <a> | <i class="fas fa-times"></i>
+                                                    <del>{{$each->old_price}} $</del></a>
+
+                                                <a style="margin-left: 10px"> | <i class="fas fa-check-double"></i>
+                                                    {{$each->new_price}} </a>
+
+                                            </div>
+                                    </div>
+                                </article>
+                            </div>
+                            <!-- listing-item end-->
+                        </div>
+                    @endforeach
+                    <!--slick-slide-item end-->
+
+                </div>
+                <!--listing-carousel end-->
+                @if ($x > 1)
+                    <div class="swiper-button-prev sw-btn"><i class="fa fa-long-arrow-left"></i></div>
+                    <div class="swiper-button-next sw-btn"><i class="fa fa-long-arrow-right"></i></div>
+                @endif
+            </div>
+
+            <!--  carousel end-->
+        </section>
+    @endif
+    <!-- section end -->
+
+    <!--section -->
+    @if (count($place_job) != 0)
+        <section class="gray-section">
+            <div class="container">
+                <div class="section-title">
+                    <h2>الوظائف</h2>
+                    <div class="section-subtitle">الوظائف</div>
+                    <span class="section-separator"></span>
+                    <p>كل الوظائف.</p>
+                </div>
+            </div>
+            <!-- carousel -->
+
+            <div class="list-carousel fl-wrap card-listing ">
+                <!--listing-carousel-->
+                <div class="listing-carousel  fl-wrap ">
+
+                    <!--slick-slide-item-->
+                    <?php $x=0; ?>
+                    @foreach($place_job as $each)
+                    <?php $x=0;$x++ ?>
+                        <div class="slick-slide-item" >
+                            <!-- listing-item -->
+                            <div class="listing-item " dir="rtl">
+                                <article class="geodir-category-listing fl-wrap">
+                                    <div class="geodir-category-img">
+                                        <img src="{{ asset('uploads/jobs/'.$each->image) }}" alt="{{$each->title}}">
+                                        <div class="overlay"></div>
+                                        <div class="list-post-counter"><span>{{$each->count}}</span><i class="fa fa-user"></i>
+                                        </div>
+                                    </div>
+                                    <div class="geodir-category-content fl-wrap">
+                                        <a class="listing-geodir-category" href="">{{ $each->sallary }} $</a>
+                                        <div class="listing-avatar"><a href="{{$each->place_id}}"><img
+                                                    src="{{ asset('uploads/jobs/'.$each->image) }}" alt="{{$each->title}}"></a>
+                                            <span class="avatar-tooltip">تم الاضافه عن طريق <strong>{{$each->title}}</strong></span>
+                                        </div>
+                                        <h3><a >{{$each->title}} </a></h3>
+                                        {{-- <p>{{$each ->description}}.</p> --}}
+                                        <div class="geodir-category-options fl-wrap">
+
+                                            <div class="geodir-category-location">
+                                                <a> | <i class="fas fa-sms"></i>
+                                                    {{$each->email}} </a>
+
+                                                <a style="margin-left: 10px"> | <i class="fas fa-check-double"></i>
+                                                    {{$each->end_date}} </a>
+
+                                            </div>
+                                    </div>
+                                </article>
+                            </div>
+                            <!-- listing-item end-->
+                        </div>
+                    @endforeach
+                    <!--slick-slide-item end-->
+
+                </div>
+                <!--listing-carousel end-->
+                @if ($x > 1)
+                    <div class="swiper-button-prev sw-btn"><i class="fa fa-long-arrow-left"></i></div>
+                    <div class="swiper-button-next sw-btn"><i class="fa fa-long-arrow-right"></i></div>
+                @endif
+            </div>
+
+            <!--  carousel end-->
+        </section>
+    @endif
+    <!-- section end -->
 
 
 
@@ -542,29 +582,24 @@
                 </div>
             </div>
             <div class="col-md-4">
-                <!--  carousel-->
-                <div class="list-single-carousel-wrap fl-wrap" id="sec1">
-                    <div class="fw-carousel fl-wrap full-height lightgallery">
+                <!-- Start Video -->
+                @if ($data[0]->video != Null)
 
-                    @foreach ($place_gallary as $img )
-
-                        <!-- slick-slide-item -->
-                        <div class="slick-slide-item">
-                            <div class="box-item">
-                                <img src="{{ asset('web_assets/images/all/single/'.$img->uploads ) }}" alt="">
-                                <a href="{{ asset('web_assets/images/all/single/'.$img->uploads ) }}" class="gal-link popup-image"><i
-                                        class="fa fa-search"></i></a>
-                            </div>
-                        </div>
-                        <!-- slick-slide-item end -->
-
-                    @endforeach
-
+                <div class="list-single-main-item fl-wrap" id="sec3">
+                    <div class="list-single-main-item-title fl-wrap">
+                        <h3>Promo Video</h3>
                     </div>
-                    <div class="swiper-button-prev sw-btn"><i class="fa fa-long-arrow-left"></i></div>
-                    <div class="swiper-button-next sw-btn"><i class="fa fa-long-arrow-right"></i></div>
+                    <div class="iframe-holder fl-wrap">
+                        <div class="resp-video">
+                            <video width="100%" height="100%" controls>
+                                <source src="{{ asset('uploads/places') }}/{{ $data[0]->video }}" type="video/mp4">
+                                <source src="{{ asset('uploads/places') }}/{{ $data[0]->video }}" type="video/ogg">
+                            </video>
+                        </div>
+                    </div>
                 </div>
-                <!--  carousel  end-->
+
+            @endif
             </div>
         </div>
     </section>

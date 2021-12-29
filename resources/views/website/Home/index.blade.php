@@ -31,16 +31,16 @@
                                         <select data-placeholder="قسم رئيسى" class=" nice-select" name="category" id="category" style="    font-size: 20px;">
                                             <option style="display:none">قسم رئيسى</option>
                                             @foreach ( $all_category as $category )
-                                                    
+
                                                 <option value="{{$category->id}}">{{$category->name}}</option>
                                             @endforeach
-                                            
+
                                         </select>
                                     </div>
                                     <div class="main-search-input-item ">
                                         <select name="subcategory" data-placeholder="قسم فرعى"   id="subcategory" class=" nice-select" style="    font-size: 20px;">
                                             <option style="display:none">قسم فرعى</option>
-                                            
+
                                         </select>
                                     </div>
                                     <button class="main-search-button"
@@ -190,7 +190,7 @@
                     </div>
                 </div>
                 <!-- gallery-item end-->
-            </div> 
+            </div>
             <!-- portfolio end -->
             <a href="listing.html" class="btn  big-btn circle-btn dec-btn  color-bg flat-btn">View All<i
                     class="fa fa-eye"></i></a>
@@ -792,7 +792,42 @@
             <div class="swiper-button-next sw-btn"><i class="fa fa-long-arrow-right"></i></div>
         </div>
         <!-- carousel end-->
+
     </section>
+    @if (Auth::user())
+    <a onclick="BtnCollapseExample()" class="btn btn_info big-btn circle-btn  dec-btn color-bg flat-btn">أضف رأيك وتجربتك في شوارعنا<i class="fas fa-plus"></i></a>
+    <br><br><br>
+      <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+            <div class="form-group" style="width: 50%;margin: auto">
+                <form action="{{ route('add_testimonials') }}" method="POST" dir="rtl">
+                    @csrf
+                    <label for="exampleFormControlTextarea1">أضف رأيك</label>
+                    <textarea name="comment" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    <button type="submit" class="btn btn_info">حفظ</button>
+                </form>
+            </div>
+        </div>
+      </div>
+      <style>
+          #collapseExample{
+              display: none;
+          }
+          .btn_info{
+              cursor: pointer;
+              margin-top: 10px;
+          }
+      </style>
+      <script>
+          function BtnCollapseExample(){
+              if(document.getElementById('collapseExample').style.display == "block"){
+                document.getElementById('collapseExample').style.display ="none";
+              }else{
+                document.getElementById('collapseExample').style.display ="block";
+              }
+          }
+      </script>
+    @endif
     <!-- section end -->
     <!--section -->
     <section class="gray-section">
@@ -895,10 +930,10 @@
     </section>
     <!-- section end -->
     <!--section -->
-    
+
     @if(auth::User())
     @else
-    
+
     <!--section -->
     <section class="gradient-bg">
         <div class="cirle-bg">
@@ -919,7 +954,7 @@
     </section>
     <!-- section end -->
     @endif
-    
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script type="text/javascript">
@@ -927,7 +962,7 @@
 
         $(document).ready(function (){
             $('#category').on('change',function(){
-             
+
                 var categoryId = $(this).val();
                 if( categoryId){
                     $.ajax({
@@ -938,12 +973,12 @@
                         success:function(data) {
                             console.log(data);
                         if(data){
-                            $('#subcategory').empty(); 
-                            $('#subcategory').append('<option value="">-- قسم فرعى --</option>'); 
-    
+                            $('#subcategory').empty();
+                            $('#subcategory').append('<option value="">-- قسم فرعى --</option>');
+
                             $.each(data, function(key, value){
                                 console.log(value.id);
-    
+
                                 $('#subcategory').append('<option value="'+ value.id +'">' + value.name + '</option>');
                             });
                         }else{

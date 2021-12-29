@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Site\mainController;
 use App\Http\Controllers\Site\UserController;
-
 use App\Http\Controllers\Site\places\placesController;
 use App\Http\Controllers\Site\job\JobsController;
 use App\Http\Controllers\Site\copouns\CopounsController;
@@ -15,6 +14,9 @@ use App\Http\Controllers\Site\products\OrdersCoupons;
 use App\Http\Controllers\Site\profile\ControlCopounsController;
 use App\Http\Controllers\Site\profile\UserProductsController;
 use App\Http\Controllers\Site\profile\UserJobsController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ForgotPasswordController;
+
 
 
 
@@ -90,9 +92,24 @@ Route::group([ 'middleware' => 'auth:web'], function() {
 // Start Orders Products
 Route::post('/order', [ordersController::class, 'add_order']);
 Route::get('/orders', [ordersController::class, 'show'])->name('orders');
+
+Route::get('/orders_don', [ordersController::class, 'show_order_don'])->name('show_order_don');
+
 Route::delete('/order/delete/{id}', [ordersController::class, 'destroy']);
 Route::post('/my_order', [ordersController::class, 'my_order']);
+
+Route::post('/order_don', [ordersController::class, 'order_don']);
+
+
 // End Orders Products
+
+// Start State Order
+Route::get('/cancel_order/{id}', [ordersController::class, 'cancel_order'])->name('cancel_order');
+Route::get('/Accepted_order/{id}', [ordersController::class, 'Accepted_order'])->name('Accepted_order');
+Route::get('/Shipped_order/{id}', [ordersController::class, 'Shipped_order'])->name('Shipped_order');
+Route::get('/delivered_order/{id}', [ordersController::class, 'delivered_order'])->name('delivered_order');
+
+// End State Order
 
 // Start Place User
 Route::post('add_place',  [MyPlaceController::class , 'add_place'])->name('user.place.add');
@@ -152,10 +169,23 @@ Route::post('/apply-job/{place_id}', [JobsController::class, 'apply_job']);
 // End Control Jops
 
 
+// Start My Profile Info
+Route::get('/my-profile', [UserController::class, 'my_profile'])->name('myprofile');
+Route::post('/update-my-Profile', [UserController::class, 'update_myProfile'])->name('update_myProfile');
+
+
+Route::get('/changePassword',[HomeController::class, 'showChangePasswordGet'])->name('changePasswordGet');
+Route::post('/changePassword',[HomeController::class, 'changePasswordPost'])->name('changePasswordPost');
+// End My Profile Info
+
+// Start My Wallet Info
+Route::get('/my-wallet', [UserController::class, 'my_wallet'])->name('my_wallet');
+
+// End My Wallet Info
+
+Route::post('add-testimonials',[mainController::class, 'add_testimonials'])->name('add_testimonials');
+
 });
-
-
-
 
 //Start get Data Ajax Place
 Route::get('/get_SubCategory{id}', [placeController::class, 'get_SubCategory']);
@@ -163,5 +193,21 @@ Route::get('/get_subCity{city_id}', [placeController::class, 'get_subCity']);
 Route::get('/get_locations{id}', [placeController::class, 'get_locations']);
 //End get Data Ajax Place
 
-Route::get('/search', [mainController::class, 'search'])->name('search');
 
+
+
+
+
+Route::get('/search', [mainController::class, 'search'])->name('search');
+Route::get('/search_tags', [mainController::class, 'search'])->name('search');
+
+
+
+
+
+// Start forget-password
+Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
+Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
+Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
+Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
+// End forget-password

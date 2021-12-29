@@ -35,11 +35,18 @@
                 <td>{{$each -> used}}</td>
                 <td>{{$each -> created_at}}</td>
                 <td>
-                    <div class="btn-group" role="group" aria-label="Basic xexample"> 
-                        
+                    <div class="btn-group" role="group" aria-label="Basic xexample">
+
                         <a href="{{route('admin.destroy.copoun', $each -> id)}}"
                             class="btn btn-outline-danger btn-min-width box-shadow-3  mr-1 mb-1">حذف</a>
 
+                        @if ($each->is_active == 0)
+                            <a href="{{route('admin.Copouns.accept', $each->id)}}"
+                            class="btn btn-outline-success btn-min-width box-shadow-3  mr-1 mb-1" style="height: 40px;">تفعيل</a>
+                        @else
+                            <a href="{{route('admin.Copouns.accept', $each->id)}}"
+                            class="btn btn-outline-success btn-min-width box-shadow-3  mr-1 mb-1" style="height: 40px;">إلغاء تفعيل العرض</a>
+                        @endif
 
                     </div>
                 </td>
@@ -64,10 +71,10 @@
             </div>
             <form id="basic-form" method="post"action="{{route('admin.place.addCopoun', $place_id)}}" novalidate enctype="multipart/form-data" >
                 {{ csrf_field() }}
-                
+
                 <div class="modal-body">
                     <input type="hidden" name="place_id" value="{{$place_id}}">
-                    
+
                         <div class="form-group ">
                             <label style="    font-size: arge;">أسم العرض </label>
                             <input type="text" id="title" name='title' class="form-control"  required>

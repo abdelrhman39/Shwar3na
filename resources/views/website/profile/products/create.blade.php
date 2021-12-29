@@ -74,7 +74,7 @@
                                                 </div>
 
                                                 <div class="form-group col-md-6">
-                                                    <label> صور المنتج (اختر 4 صور فقط لن يتم رفع اكثر من 4 صور فقط! ) </label>
+                                                    <label> صور المنتج (اختر 6 صور فقط لن يتم رفع اكثر من 6 صور فقط! ) </label>
                                                     <input type="file" multiple id="file" name="images[]"  class="form-control">
                                                     @error('images')
                                                     <span class="text-danger">{{$message}}</span>
@@ -124,7 +124,7 @@
                                                     @enderror
                                                 </div>
                                                 <div class="form-group col-md-6">
-                                                    <label for="projectinput1"> القسم الرئيسى </label>
+                                                    <label for="projectinput1"> المحل المالك  </label>
                                                     <select class="form-control" name="place_id" id="category" >
                                                         <option style="display:none" value="">أختر المحل صاحب المنتج </option>
                                                         @foreach ( $all_places  as $place )

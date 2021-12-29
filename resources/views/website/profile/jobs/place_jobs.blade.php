@@ -46,6 +46,13 @@
                                         class="fa fa-trash-o"></i></a></li>  --}}
                         </ul>
                     </div>
+                    <span class="accept">
+                        @if ($product->is_active == 1)
+                            Active
+                        @else
+                            Not Active
+                        @endif
+                    </span>
                 </div>
             </div>
 

@@ -75,6 +75,7 @@ class ControlCopounsController extends Controller
         $add->new_price = $request->new_price;
         $add->used = 0;
         $add->place_id = $place_id;
+        $add->is_active = 0;
         $add->created_at = $dateTime;
         $add->save();
         if($add->save()){

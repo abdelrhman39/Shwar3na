@@ -42,9 +42,10 @@ class CopounsController extends Controller
         $about_data = AboutUs::first();
         if(Auth::user() != NULL){
             $order_count = OrdersProducts::select()
-            ->join('products','products.id','=','orders_products.id')
+            ->join('products','products.id','=','orders_products.product_id')
             ->join('users','users.id','=','orders_products.user_id')
-            ->where('user_id',Auth::user()->id)->get();
+            ->where('user_id',Auth::user()->id)
+            ->where('orders_products.order_don',0)->get();
 
             $orders_coupons  = OrdersCoupons::select()
                 ->join('place_discounts','place_discounts.id','=','orders_coupons.discounts_id')

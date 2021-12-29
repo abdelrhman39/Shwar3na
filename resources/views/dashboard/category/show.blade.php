@@ -60,16 +60,16 @@
                                                     <tr>
                                                         <td>{{$category -> id}}</td>
                                                         <td>{{$category -> name}}</td>
-                                                        <td> <img style="width: 150px; height: 100px;" src="/uploads/category/{{$category -> image}}"></td>
+                                                        <td> <img style="width: 150px; height: 100px;" src="{{ url('/uploads/category/'.$category->image) }}"></td>
                                                         <td>
-                                                            <div class="btn-group" role="group" aria-label="Basic example"> 
-                                                                
+                                                            <div class="btn-group" role="group" aria-label="Basic example">
+
                                                                 <a href="{{route('admin.Categories.edit',$category -> id)}}"
                                                                    class="btn btn-outline-primary btn-min-width box-shadow-3 mr-1 mb-1">تعديل</a>
 
                                                                 <a href="{{route('admin.subcategory',$category -> id)}}"
                                                                     class="btn btn-outline-primary btn-min-width box-shadow-3  mr-1 mb-1">الأقسام الفرعية</a>
- 
+
                                                                 <a href="{{route('admin.Categories.destroy', $category -> id)}}"
                                                                    class="btn btn-outline-danger btn-min-width box-shadow-3  mr-1 mb-1">حذف</a>
 

@@ -54,20 +54,35 @@
                                 <li><a class="del-btn" style="margin-top: 10px;" href="{{ url('#showTime-modal'.$place->id) }}"> مواعيد هذا المحل <i class="fas fa-shopping-basket"></i></a>
                                 </li>
 
-                                <li><a style="margin-top: 10px;" href="{{ url('#placeImg-modal'.$place->id) }}"> صور المعرض<i class="fas fa-shopping-basket"></i></a>
+                                <li><a style="margin-top: 10px;" href="{{ url('#placeImg-modal'.$place->id) }}"> صور المعرض <i class="fas fa-shopping-basket"></i></a>
                                 </li>
+
+                                <?php $placeOrder=0; ?>
+                                @foreach ($order_don as $order)
+                                    @if ($order->place_id == $place->id)
+                                        <?php $placeOrder++; ?>
+                                    @endif
+                                @endforeach
+
+                                @if ($placeOrder > 0)
+                                    <li><a style="margin-top: 10px;" href="{{ url('#placeOrder-modal'.$place->id) }}"> تم طلب منتجات من هذا المحال<span class="order_don">{{ $placeOrder }}</span> <i class="fas fa-shopping-basket"></i></a>
+                                    </li>
+                                @endif
+
+
+
                                 {{--  <li><a href="#" class="del-btn">Delete <i
                                             class="fa fa-trash-o"></i></a></li>  --}}
                             </ul>
                         </div>
 
-                        <span class="accept">
+
                             @if ($place->state == 'accept')
-                                Active
+                                <span class="accept accept-active"> Active</span>
                             @else
-                            Not Active
+                                <span class="accept">Not Active</span>
                             @endif
-                        </span>
+
                     </div>
                 </div>
 
@@ -242,6 +257,121 @@
                 </div>
 
 
+                <div id="placeOrder-modal{{ $place->id }}" class="modal" dir="rtl" style="text-align: right">
+                    <div class="modal__content">
+                        <h1 style="font-size: 1.5em;text-align:center;padding:20px 0px">طلبات  :  {{ $place->name_ar }}</h1><hr><br>
+
+                        <table class="table display nowrap table-striped table-bordered scroll-horizontal">
+                            <thead>
+                            <tr>
+                                <th>رقم الطلب</th>
+                                <th> صوره المنتج</th>
+                                <th>اسم المنتج</th>
+                                <th>العدد</th>
+                                <th> وقت الأنشاء</th>
+
+                                <th>الإجراءات</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+
+
+                                    @foreach ($order_don as $don)
+                                        @if ( $don->place_id == $place->id )
+                                        @foreach ($product as $pro )
+                                            @if ($pro->place_id == $place->id)
+
+
+
+                                            <tr>
+                                                <td>{{$don->order_number}}</td>
+                                                <td><img width="100xp" src="{{ url('uploads/products/'.$pro->main_image) }}"></td>
+
+                                                <td>{{$pro->name}}</td>
+                                                <td>{{$don->quantity}}</td>
+                                                <td>{{$don->created_at}}</td>
+                                                <td>
+                                                    <div class="btn-group" role="group" aria-label="Basic xexample">
+
+
+                                                        @if ($don->state == 'cancel')
+                                                            تم رفض الطلب
+                                                            <div class="dropdown">
+                                                                <button class="dropbtn">تعديل الحاله </button>
+                                                                <div class="dropdown-content">
+                                                                  <a href="{{ url('Accepted_order/'.$don->id) }}">قبول وجاري التجهيز</a>
+                                                                  <a href="{{ url('Shipped_order/'.$don->id) }}">قبول وتم الشحن </a>
+                                                                  {{-- <a href="delivered_order/{{ $don->id }}">تم التسيلم</a> --}}
+                                                                </div>
+                                                            </div>
+
+                                                        @elseif ($don->state == 'Accepted')
+                                                            جاري تجهيز طلبك
+                                                            <div class="dropdown">
+                                                                <button class="dropbtn">تعديل الحاله </button>
+                                                                <div class="dropdown-content">
+                                                                  {{-- <a href="{{ url('Accepted_order/'.$don->id) }}">جاري التجهيز</a> --}}
+                                                                  <a href="{{ url('Shipped_order/'.$don->id) }}">تم الشحن </a>
+                                                                  {{-- <a href="delivered_order/{{ $don->id }}">تم التسيلم</a> --}}
+                                                                </div>
+                                                            </div>
+
+                                                            <a href="{{ url('cancel_order/'.$don->id) }}" class="cancel" > رفض الطلب</a>
+                                                        @elseif ($don->state == 'Shipped')
+                                                            تم الشحن
+                                                            <div class="dropdown">
+                                                                <button class="dropbtn">تعديل الحاله </button>
+                                                                <div class="dropdown-content">
+                                                                  <a href="{{ url('Accepted_order/'.$don->id) }}">جاري التجهيز</a>
+                                                                  {{-- <a href="{{ url('Shipped_order/'.$don->id) }}">تم الشحن </a> --}}
+                                                                  {{-- <a href="delivered_order/{{ $don->id }}">تم التسيلم</a> --}}
+                                                                </div>
+                                                            </div>
+
+                                                            <a href="{{ url('cancel_order/'.$don->id) }}" class="cancel" > رفض الطلب</a>
+                                                        @elseif ($don->state == 'delivered')
+                                                            تم التسليم
+                                                        @else
+
+                                                        <div class="dropdown">
+                                                            <button class="dropbtn">تعديل الحاله </button>
+                                                            <div class="dropdown-content">
+                                                              <a href="{{ url('Accepted_order/'.$don->id) }}">جاري التجهيز</a>
+                                                              <a href="{{ url('Shipped_order/'.$don->id) }}">تم الشحن </a>
+                                                              {{-- <a href="delivered_order/{{ $don->id }}">تم التسيلم</a> --}}
+                                                            </div>
+                                                        </div>
+
+                                                        <a href="{{ url('cancel_order/'.$don->id) }}" class="cancel" > رفض الطلب</a>
+                                                        @endif
+
+
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                            @endif
+
+                                        @endforeach
+                                        @endif
+                                    @endforeach
+
+                            </tbody>
+
+
+                        </table>
+
+
+
+                        <a href="#" class="modal__close">&times;</a>
+                    </div>
+                </div>
+
+
+
+
             @endforeach
 
 
@@ -253,105 +383,48 @@
 
 
 
-
-
 <style>
-    .btn_delImg{
-        position: absolute;
-        top:0;
-        z-index: 199;
-        background-color: #333;
-        padding: 10px;
-        border-radius: 10px 0px;
-        color: #fff;
+    .dropbtn {
+        background-color: #04AA6D;
+        color: white;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
     }
-    .btn_addImg{
-        background-color: #333;
-        padding: 10px;
-        border-radius: 10px 0px;
-        color: #fff;
-    }
-        /* If you like this, be sure to ❤️ it. */
-        .wrapper {
-        height: 100vh;
-        /* This part is important for centering the content */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        /* End center */
-        background: -webkit-linear-gradient(to right, #834d9b, #d04ed6);
-        background: linear-gradient(to right, #834d9b, #d04ed6);
-        }
 
-        .wrapper a {
-        display: inline-block;
-        text-decoration: none;
-        padding: 15px;
-        background-color: #fff;
-        border-radius: 3px;
-        text-transform: uppercase;
-        color: #585858;
-        font-family: 'Roboto', sans-serif;
-        }
-
-        .modal {
-        visibility: hidden;
-        opacity: 0;
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(77, 77, 77, .7);
-        transition: all .4s;
-        z-index: 99999999999;
-        }
-
-        .modal:target {
-        visibility: visible;
-        opacity: 1;
-        }
-
-        .modal__content {
-        border-radius: 4px;
+    .dropdown {
         position: relative;
-        width: 100%;
-        max-width: 90%;
-        background: #fff;
-        padding: 1em 2em;
-        overflow-y: auto;
-        }
+        display: inline-block;
+        width: 150px;
+    }
 
-        .modal__footer {
-        text-align: right;
-        a {
-            color: #585858;
-        }
-        i {
-            color: #d02d2c;
-        }
-        }
-        .modal__close {
+    .dropdown-content {
+        display: none;
         position: absolute;
-        top: 10px;
-        right: 10px;
-        color: #585858;
-        text-decoration: none;
-        font-size: 2.5em
-        }
+        background-color: #f1f1f1;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
 
-        span.accept {
-            background-color: #f86420;
-            padding: 20px;
-            position: absolute;
-            border-radius: 0px 15px;
-            color: #fff;
-            font-size: 1.2em;
-            box-shadow: 0px 0px 0px 7px rgb(180 177 177 / 20%);
-        }
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdown-content a:hover {background-color: #ddd;}
+
+    .dropdown:hover .dropdown-content {display: block;}
+
+    .dropdown:hover .dropbtn {background-color: #3e8e41;}
+
+    .btn-group .cancel{
+        color: #b1afaf;
+    }
 </style>
+
+
 
 @endsection

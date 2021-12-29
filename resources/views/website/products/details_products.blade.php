@@ -2,43 +2,6 @@
 
 @section('site_title', 'المنتجات')
 @section('content')
-    <!--  carousel-->
-    <div class="list-single-carousel-wrap fl-wrap" id="sec1">
-        <div class="fw-carousel fl-wrap full-height lightgallery">
-
-            <!-- slick-slide-item -->
-            @if (count($product_gallary) < 1)
-                <div class="slick-slide-item">
-                    <div class="box-item">
-                        <img src="{{  url('/uploads/products/'.$data[0]->main_image) }}" alt="">
-                        <a href="{{  url('/uploads/products/'.$data[0]->main_image) }}" class="gal-link popup-image"><i
-                                class="fa fa-search"></i></a>
-                    </div>
-                </div>
-            @else
-
-                @foreach ($product_gallary as $img)
-                    <div class="slick-slide-item">
-                        <div class="box-item">
-                            <img src="{{  url('/uploads/products/'.$img->image) }}" alt="">
-                            <a href="{{  url('/uploads/products/'.$img->image) }}" class="gal-link popup-image"><i
-                                    class="fa fa-search"></i></a>
-                        </div>
-                    </div>
-                @endforeach
-
-            @endif
-
-            <!-- slick-slide-item end -->
-
-
-
-        </div>
-        <div class="swiper-button-prev sw-btn"><i class="fa fa-long-arrow-left"></i></div>
-        <div class="swiper-button-next sw-btn"><i class="fa fa-long-arrow-right"></i></div>
-    </div>
-    <!--  carousel  end-->
-
 
         <section class="gray-section no-top-padding" dir="rtl">
             <div class="container">
@@ -93,6 +56,34 @@
                             </div>
 
 
+                            <div class="list-single-main-item fl-wrap" id="sec3">
+                                <div class="list-single-main-item-title fl-wrap">
+                                    <h3>Gallery - Photos</h3>
+                                </div>
+                                <!-- gallery-items   -->
+                                <div
+                                    class="gallery-items grid-small-pad  list-single-gallery three-coulms lightgallery">
+
+                                    @foreach ($product_gallary as $img)
+                                    <!-- Product Images -->
+                                    <div class="gallery-item">
+                                        <div class="grid-item-holder">
+                                            <div class="box-item" style="height: 200px">
+                                                <img src="{{  url('/uploads/products/'.$img->image) }}" alt="">
+                                                <a href="{{  url('/uploads/products/'.$img->image) }}"
+                                                    class="gal-link popup-image"><i
+                                                        class="fa fa-search"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Product Images end -->
+                                    @endforeach
+
+                                </div>
+                                <!-- end gallery items -->
+                            </div>
+                            <!-- list-single-main-item end -->
+
 
                         </div>
                     </div>
@@ -109,6 +100,7 @@
                                             <div class="quantity fl-wrap">
                                                 <span>العدد : </span>
                                                 <div class="quantity-item" dir="rtl">
+                                                    <input type="hidden" value="{{ $data[0]->place_id }}" name="place_id">
                                                     <input type="hidden" value="{{ $data[0]->id }}" name="product_id">
                                                     <input type="hidden" value="@if (Auth::user()) {{ Auth::user()->id }} @endif" name="user_id">
                                                     <input type="button" value="-" class="minus">
@@ -130,7 +122,6 @@
                                 </div>
                             </div>
                             <!--box-widget-item end -->
-
 
                         </div>
                     </div>

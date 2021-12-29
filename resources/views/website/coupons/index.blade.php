@@ -110,6 +110,7 @@
                             <div class="list-main-wrap fl-wrap card-listing">
                                 <!-- listing-item -->
 
+
                             @isset($data)
                                 @foreach($data as $each)
                                     {{-- @if ($each->expired_date > date('d-m-Y')) --}}
@@ -134,7 +135,7 @@
                                                 @if(Auth::User())
                                                 <form method="post" action="{{ url('order-coupon/') }}" class="add-comment custom-form" dir="rtl">
                                                     @csrf
-                                                    <input type="hidden" value="{{ $data[0]->id }}" name="discounts_id">
+                                                    <input type="hidden" value="{{ $each->id }}" name="discounts_id">
                                                     <input type="hidden" value="{{ Auth::user()->id }}" name="user_id">
                                                     <button type="submit" class="btn  big-btn  color-bg flat-btn"><i
                                                         class="fa fa-angle-right"></i> حجز الكوبون</button>

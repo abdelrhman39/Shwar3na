@@ -26,6 +26,87 @@
                     <div class="col-list-wrap  center-col-list-wrap left-list">
                         <div class="container">
 
+                            <div class="listsearch-maiwrap box-inside fl-wrap">
+                                <div class="listsearch-header fl-wrap">
+                                    <h3>Results For : <span>All Listings</span></h3>
+                                    <div class="listing-view-layout">
+                                        <ul>
+                                            <li><a class="grid active" href="#"><i class="fa fa-th-large"></i></a></li>
+                                            <li><a class="list" href="#"><i class="fa fa-list-ul"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- listsearch-input-wrap  -->
+                                <div class="listsearch-input-wrap fl-wrap">
+                                    <div class="listsearch-input-item">
+                                        <i class="mbri-key single-i"></i>
+                                        <input type="text" placeholder="Keywords?" value="" />
+                                    </div>
+                                    <div class="listsearch-input-item">
+                                        <select data-placeholder="Location" class="chosen-select">
+                                            <option>All Locations</option>
+                                            <option>Bronx</option>
+                                            <option>Brooklyn</option>
+                                            <option>Manhattan</option>
+                                            <option>Queens</option>
+                                            <option>Staten Island</option>
+                                        </select>
+                                    </div>
+                                    <div class="listsearch-input-item">
+                                        <select data-placeholder="All Categories" class="chosen-select">
+                                            <option>All Categories</option>
+                                            <option>Shops</option>
+                                            <option>Hotels</option>
+                                            <option>Restaurants</option>
+                                            <option>Fitness</option>
+                                            <option>Events</option>
+                                        </select>
+                                    </div>
+                                    <div class="listsearch-input-text" id="autocomplete-container">
+                                        <label><i class="mbri-map-pin"></i> Enter Addres </label>
+                                        <input type="text" placeholder="Destination , Area , Street"
+                                            id="autocomplete-input" class="qodef-archive-places-search" value="" />
+                                        <a href="#" class="loc-act qodef-archive-current-location"><i
+                                                class="fa fa-dot-circle-o"></i></a>
+                                    </div>
+                                    <!-- hidden-listing-filter -->
+                                    <div class="hidden-listing-filter fl-wrap">
+                                        <div class="distance-input fl-wrap">
+                                            <div class="distance-title"> Radius around selected destination
+                                                <span></span> km</div>
+                                            <div class="distance-radius-wrap fl-wrap">
+                                                <input class="distance-radius rangeslider--horizontal" type="range"
+                                                    min="1" max="100" step="1" value="1"
+                                                    data-title="Radius around selected destination">
+                                            </div>
+                                        </div>
+                                        <!-- Checkboxes -->
+                                        <div class=" fl-wrap filter-tags">
+                                            <h4>Filter by Tags</h4>
+                                            <div class="filter-tags-wrap">
+                                                <input id="check-a" type="checkbox" name="check" checked>
+                                                <label for="check-a">Elevator in building</label>
+                                            </div>
+                                            <div class="filter-tags-wrap">
+                                                <input id="check-b" type="checkbox" name="check">
+                                                <label for="check-b">Friendly workspace</label>
+                                            </div>
+                                            <div class="filter-tags-wrap">
+                                                <input id="check-c" type="checkbox" name="check">
+                                                <label for="check-c">Instant Book</label>
+                                            </div>
+                                            <div class="filter-tags-wrap">
+                                                <input id="check-d" type="checkbox" name="check">
+                                                <label for="check-d">Wireless Internet</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- hidden-listing-filter end -->
+                                    <button class="button fs-map-btn">Update</button>
+                                    <div class="more-filter-option">More Filters <span></span></div>
+                                </div>
+                                <!-- listsearch-input-wrap end -->
+                            </div>
                             <!-- list-main-wrap-->
                             <div class="list-main-wrap fl-wrap card-listing">
                                 <!-- listing-item -->
@@ -35,16 +116,14 @@
 
                                     <div class="listing-item " dir="rtl">
                                         <article class="geodir-category-listing fl-wrap">
-                                            <div class="geodir-category-img">
-                                                <img src="{{  url('/uploads/jobs/'.$each->image) }}" alt="{{$each->title}}">
-                                                <div class="overlay"></div>
-                                                <div class="list-post-counter"><span>{{$each ->views}}</span><i class="fa fa-heart"></i>
+                                            <div class="" style="padding-top:100px;background-color: #fff">
+
+                                                <div class="list-post-counter" style=""><span>{{$each ->views}}</span><i class="fa fa-heart"></i>
                                                 </div>
                                             </div>
                                             <div class="geodir-category-content fl-wrap">
                                                 @if ($each->name)<a class="listing-geodir-category" href="">  {{ $each->name }} </a>@endif
-                                                <div class="listing-avatar"><a href="{{ url('jobs/'.$each ->id) }}"><img src="{{  url('/uploads/jobs/'.$each->image) }}" alt="{{$each->title}}"></a>
-                                                    <span class="avatar-tooltip">تم الاضافه عن طريق <strong>{{$each->title}}</strong></span>
+                                                <div class="listing-avatar"><a href="{{ url('jobs/'.$each ->id) }}"><img width="100px" height="100px" src="{{  url('/uploads/jobs/'.$each->image) }}" alt="{{$each->title}}"></a>
 
                                                 </div>
 

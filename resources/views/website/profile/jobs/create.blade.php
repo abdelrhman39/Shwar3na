@@ -128,7 +128,7 @@
                                                 </div>
 
                                                 <div class="form-group col-md-6">
-                                                    <label for="projectinput1"> نوع الظيفة </label>
+                                                    <label for="projectinput1"> نوع الوظيفة </label>
                                                     <select class="form-control" name="type" id="type" >
                                                             <option>دوام كامل</option>
                                                             <option>دوام جزئي </option>
@@ -162,21 +162,20 @@
                                                 </div>
 
                                                 <div class="form-group col-md-6">
-                                                    <label for="projectinput1"> نوع الظيفة </label>
+                                                    <label for="projectinput1"> قسم الوظيفة</label>
                                                     <select class="form-control" name="jobCat_id" id="jobCat_id" >
                                                         @foreach ($JobCategory as $cat )
 
                                                         <option value="{{ $cat->id }}">{{ $cat->name }} </option>
 
                                                         @endforeach
-
                                                     </select>
                                                     @error('jobCat_id')
                                                         <span class="text-danger">{{$message}}</span>
                                                     @enderror
                                                 </div>
 
-                                                <div class="form-group col-md-6" style="float: none">
+                                                <div class="form-group col-md-6" >
                                                     <label for="projectinput1"> المحل صاحب الوظيفة </label>
                                                     <select class="form-control" name="place_id" id="jobCat_id">
                                                         <option value=""> اختر المحل </option>
@@ -187,7 +186,7 @@
                                                         @endforeach
 
                                                     </select>
-                                                    @error('jobCat_id')
+                                                    @error('place_id')
                                                         <span class="text-danger">{{$message}}</span>
                                                     @enderror
                                                 </div>

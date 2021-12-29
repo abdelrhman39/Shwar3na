@@ -86,7 +86,7 @@
                                                 </div>
 
                                                 <div class="form-group col-md-4">
-                                                    <label>  صور المنتج  </label>
+                                                    <label>  صور المحل  </label>
                                                     ( !.. قم بتحديد صور المنتج ولا تزيد عن 10 صور .. لن يتم رفع اكثر من 10 صور )
                                                     <input type="file" multiple id="file" name="images[]"  class="form-control">
                                                     @error('images')

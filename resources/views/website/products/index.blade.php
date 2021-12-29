@@ -133,7 +133,7 @@
                                                 @endif $</a>
 
                                                 <div class="listing-avatar"><a href="places/{{$each ->place_id}}"><img
-                                                            src="{{ asset('uploads/'.$each->logo) }}" alt="{{$each->name_ar}}"></a>
+                                                            src="{{ asset('uploads/places/'.$each->logo) }}" alt="{{$each->name_ar}}"></a>
                                                     <span class="avatar-tooltip">تم الاضافه عن طريق <strong>{{$each->name_ar}}</strong></span>
                                                 </div>
                                                 <h3><a href="{{ url('products/'.$each->id)}}">{{$each->name}} </a></h3>
@@ -141,6 +141,7 @@
                                                 @if(Auth::user())
                                                 <form method="post" action="{{ url('order/') }}" class="add-comment custom-form" dir="rtl">
                                                     @csrf
+                                                    <input type="hidden" value="{{ $data[0]->place_id }}" name="place_id">
                                                     <input type="hidden" value="{{ $each->id }}" name="product_id">
                                                     <input type="hidden" value="{{ Auth::user()->id }}" name="user_id">
                                                     <input type="hidden" name="quantity" value="1">
@@ -161,8 +162,8 @@
                                                             <a> | <i class="fas fa-times"></i>
                                                             <del>{{$each ->old_price}} $</del></a>
 
-                                                            <a style="margin-left: 10px"> | <i class="fas fa-check-double"></i>
-                                                            {{$each ->new_price}} </a>
+                                                            <a style="margin-left: 10px">  <i class="fas fa-check-double"></i>
+                                                            {{$each ->new_price}} $</a>
                                                         @endif
                                                     </div>
                                             </div>

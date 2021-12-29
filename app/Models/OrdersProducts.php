@@ -10,8 +10,8 @@ class OrdersProducts extends Model
     use HasFactory;
     public $table = "orders_products";
 
-    public $fillable =['id','product_id','user_id','quantity','created_at','updated_at'];
+    public $fillable =['id','product_id','user_id','quantity','order_don','place_id','created_at','updated_at'];
     public function scopeSelection($query){
-        return $query->select('id','product_id','user_id','quantity','created_at','updated_at');
+        return $query->select('id','product_id','user_id','quantity','order_don','place_id','created_at','updated_at');
     }
 }
