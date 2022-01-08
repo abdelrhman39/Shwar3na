@@ -36,6 +36,8 @@
                                     </div>
                                 </div>
                                 <!-- listsearch-input-wrap  -->
+                                <form action="{{ route('site.filtter_products') }}" method="POST">
+                                @csrf
                                 <div class="listsearch-input-wrap fl-wrap">
                                     <div class="listsearch-input-item">
                                         <i class="mbri-key single-i"></i>
@@ -52,62 +54,47 @@
                                         </select>
                                     </div>
                                     <div class="listsearch-input-item">
-                                        <select data-placeholder="All Categories" class="chosen-select">
-                                            <option>All Categories</option>
-                                            <option>Shops</option>
-                                            <option>Hotels</option>
-                                            <option>Restaurants</option>
-                                            <option>Fitness</option>
-                                            <option>Events</option>
+                                        <select data-placeholder="All Categories" name="Category_id" id="category" class="chosen-select filter-links">
+                                            <option>كل الاقسام</option>
+                                            @foreach ($all_category as $cat)
+                                                <option @isset ($Category_id) @if($Category_id == $cat->id) selected @endisset @endif value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                            @endforeach
                                         </select>
                                     </div>
-                                    <div class="listsearch-input-text" id="autocomplete-container">
-                                        <label><i class="mbri-map-pin"></i> Enter Addres </label>
-                                        <input type="text" placeholder="Destination , Area , Street"
-                                            id="autocomplete-input" class="qodef-archive-places-search" value="" />
-                                        <a href="#" class="loc-act qodef-archive-current-location"><i
-                                                class="fa fa-dot-circle-o"></i></a>
-                                    </div>
+
                                     <!-- hidden-listing-filter -->
-                                    <div class="hidden-listing-filter fl-wrap">
+                                    <div class="hidden-listing-filter fl-wrap" style="display:@isset($range_to) block @else none @endisset ">
                                         <div class="distance-input fl-wrap">
-                                            <div class="distance-title"> Radius around selected destination
-                                                <span></span> km</div>
-                                            <div class="distance-radius-wrap fl-wrap">
-                                                <input class="distance-radius rangeslider--horizontal" type="range"
-                                                    min="1" max="100" step="1" value="1"
-                                                    data-title="Radius around selected destination">
-                                            </div>
-                                        </div>
-                                        <!-- Checkboxes -->
-                                        <div class=" fl-wrap filter-tags">
-                                            <h4>Filter by Tags</h4>
-                                            <div class="filter-tags-wrap">
-                                                <input id="check-a" type="checkbox" name="check" checked>
-                                                <label for="check-a">Elevator in building</label>
-                                            </div>
-                                            <div class="filter-tags-wrap">
-                                                <input id="check-b" type="checkbox" name="check">
-                                                <label for="check-b">Friendly workspace</label>
-                                            </div>
-                                            <div class="filter-tags-wrap">
-                                                <input id="check-c" type="checkbox" name="check">
-                                                <label for="check-c">Instant Book</label>
-                                            </div>
-                                            <div class="filter-tags-wrap">
-                                                <input id="check-d" type="checkbox" name="check">
-                                                <label for="check-d">Wireless Internet</label>
-                                            </div>
+                                    {{-- Start Range --}}
+                                            <div class="wrapper">
+                                                <div class="values">
+                                                  <span id="range1">
+                                                    0
+                                                  </span>
+                                                  <span> &dash; </span>
+                                                  <span id="range2">
+                                                    100
+                                                  </span>
+                                                </div>
+                                                <div class="containers">
+                                                  <div class="slider-track"></div>
+                                                  <input name="range_from" type="range" min="0" max="10000" value="{{ isset($range_from) ? $range_from : 0 }}" id="slider-1" oninput="slideOne()">
+                                                  <input name="range_to" type="range" min="0" max="10000" value="{{ isset($range_to) ? $range_to : 6500 }}" id="slider-2" oninput="slideTwo()">
+                                                </div>
+                                              </div>
+                                    {{-- ENd Range --}}
+
                                         </div>
                                     </div>
                                     <!-- hidden-listing-filter end -->
-                                    <button class="button fs-map-btn">Update</button>
+                                    <button type="submit" class="button fs-map-btn">Update</button>
                                     <div class="more-filter-option">More Filters <span></span></div>
+                                </form>
                                 </div>
                                 <!-- listsearch-input-wrap end -->
                             </div>
                             <!-- list-main-wrap-->
-                            <div class="list-main-wrap fl-wrap card-listing">
+                            <div id="data" class="list-main-wrap fl-wrap card-listing">
                                 <!-- listing-item -->
 
                             @isset($data)
@@ -203,5 +190,155 @@
                     </div>
                 </section>
                 <!--  section  end-->
+
+
+<style>
+
+    .wrapper {
+        position: relative;
+        width: 100%;
+        background-color: #ffffff;
+        padding: 50px 40px 20px 40px;
+        border-radius: 10px;
+    }
+    .containers {
+        position: relative;
+        width: 100%;
+        height: 100px;
+        margin-top: 30px;
+    }
+    input[type="range"] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 100%;
+        outline: none;
+        position: absolute;
+        margin: auto;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: transparent;
+        pointer-events: none;
+    }
+    .slider-track {
+        width: 100%;
+        height: 5px;
+        position: absolute;
+        margin: auto;
+        top: 0;
+        bottom: 0;
+        border-radius: 5px;
+    }
+    input[type="range"]::-webkit-slider-runnable-track {
+        -webkit-appearance: none;
+        height: 5px;
+    }
+    input[type="range"]::-moz-range-track {
+        -moz-appearance: none;
+        height: 5px;
+    }
+    input[type="range"]::-ms-track {
+        appearance: none;
+        height: 5px;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 1.7em;
+        width: 1.7em;
+        background-color: #3264fe;
+        cursor: pointer;
+        margin-top: -9px;
+        pointer-events: auto;
+        border-radius: 50%;
+    }
+    input[type="range"]::-moz-range-thumb {
+        -webkit-appearance: none;
+        height: 1.7em;
+        width: 1.7em;
+        cursor: pointer;
+        border-radius: 50%;
+        background-color: #3264fe;
+        pointer-events: auto;
+        border: none;
+    }
+    input[type="range"]::-ms-thumb {
+        appearance: none;
+        height: 1.7em;
+        width: 1.7em;
+        cursor: pointer;
+        border-radius: 50%;
+        background-color: #3264fe;
+        pointer-events: auto;
+    }
+    input[type="range"]:active::-webkit-slider-thumb {
+        background-color: #ffffff;
+        border: 1px solid #3264fe;
+    }
+    .values {
+        background-color: #3264fe;
+        width: 32%;
+        position: relative;
+        margin: auto;
+        padding: 10px 0;
+        border-radius: 5px;
+        text-align: center;
+        font-weight: 500;
+        font-size: 25px;
+        color: #ffffff;
+    }
+    .values:before {
+        content: "";
+        position: absolute;
+        height: 0;
+        width: 0;
+        border-top: 15px solid #3264fe;
+        border-left: 15px solid transparent;
+        border-right: 15px solid transparent;
+        margin: auto;
+        bottom: -14px;
+        left: 0;
+        right: 0;
+    }
+
+</style>
+
+<script>
+    window.onload = function () {
+    slideOne();
+    slideTwo();
+    };
+
+    let sliderOne = document.getElementById("slider-1");
+    let sliderTwo = document.getElementById("slider-2");
+    let displayValOne = document.getElementById("range1");
+    let displayValTwo = document.getElementById("range2");
+    let minGap = 0;
+    let sliderTrack = document.querySelector(".slider-track");
+    let sliderMaxValue = document.getElementById("slider-1").max;
+
+    function slideOne() {
+    if (parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap) {
+        sliderOne.value = parseInt(sliderTwo.value) - minGap;
+    }
+    displayValOne.textContent = sliderOne.value;
+    fillColor();
+    }
+    function slideTwo() {
+    if (parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap) {
+        sliderTwo.value = parseInt(sliderOne.value) + minGap;
+    }
+    displayValTwo.textContent = sliderTwo.value;
+    fillColor();
+    }
+    function fillColor() {
+    percent1 = (sliderOne.value / sliderMaxValue) * 100;
+    percent2 = (sliderTwo.value / sliderMaxValue) * 100;
+    sliderTrack.style.background = `linear-gradient(to right, #dadae5 ${percent1}% , #3264fe ${percent1}% , #3264fe ${percent2}%, #dadae5 ${percent2}%)`;
+    }
+
+</script>
+
 
 @endsection

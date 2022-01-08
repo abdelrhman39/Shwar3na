@@ -22,6 +22,7 @@ use App\Models\PlaceGallary;
 use App\Models\Product;
 use App\Models\Order_don;
 use App\Models\OrdersProducts;
+use App\Models\Admin;
 
 class placeController extends Controller
 {
@@ -116,6 +117,7 @@ class placeController extends Controller
         $add->user_id = $request->user_id;
         $add->features = 0;
         $add->state = "accept";
+        $add->slug = Str::slug($request->name_ar);
         $add->created_at = $dateTime;
         $add->save();
 
@@ -386,6 +388,25 @@ class placeController extends Controller
 
         public function cancel_order($orderID)
         {
+            $Order_don = Order_don::where('id' , $orderID)->first();
+            $order_id  = OrdersProducts::where('id' , $orderID)->first();
+            $price_product = Product::where('id' , $order_id->product_id)->first();
+            $pric = 0;
+            if ($price_product->new_price != Null){
+                $pric = $price_product->new_price ;
+            }else{
+                $pric = $price_product->old_price;
+            }
+            $user = User::where('id',$Order_don->user_id)->first();
+            $shwar3na = Admin::where('name','shwar3na')
+            ->where('email','eng.a.mohammed89@gmail.com')
+            ->where('phone','01111319393')->first();
+
+            $user->wallet->refreshBalance();
+            $shwar3na->wallet->refreshBalance();
+
+            $result_transfer = $shwar3na->transfer($user, $pric);
+
             $updateOrder_don = Order_don::where('id' , $orderID)->update(['state' => 'cancel']);
             if($updateOrder_don){
                 session()->flash('success','تم رفض الطلب بنجاح');

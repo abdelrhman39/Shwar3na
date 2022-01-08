@@ -1,6 +1,8 @@
 <?php
 
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 use App\Http\Controllers\Site\mainController;
 use App\Http\Controllers\Site\UserController;
 use App\Http\Controllers\Site\places\placesController;
@@ -16,9 +18,10 @@ use App\Http\Controllers\Site\profile\UserProductsController;
 use App\Http\Controllers\Site\profile\UserJobsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ForgotPasswordController;
-
-
-
+use App\Http\Controllers\Site\CommentController;
+use App\Http\Controllers\googleController;
+use App\Http\Controllers\SocialController;
+use App\Http\Controllers\FacebookController;
 
 
 
@@ -31,15 +34,14 @@ use App\Http\Controllers\ForgotPasswordController;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-// */
-// Route::view('/welcome', 'welcome');
-// Route::any('{all}', [mainController::class, 'homePage'])->where('all', '^(?!api).*$');
+*/
 
 Auth::routes();
 Route::get('/get_subcategory{id}', [mainController::class, 'get_subcategory']);
 Route::get('/logout', [mainController::class, 'site_logout'])->name('logout');
 
-Route::get('/contactUs', [mainController::class, 'contactUs'])->name('site.contactUs');
+Route::get('/about_us', [mainController::class, 'about_us'])->name('site.aboutUs');
+Route::get('/contact_us', [mainController::class, 'contact_us'])->name('site.contactUs');
 
 Route::group([ 'middleware' => 'guest'], function() {
 
@@ -66,6 +68,7 @@ Route::group([ 'middleware' => 'auth:web'], function() {
 // Start Places
     Route::get('/places', [placesController::class, 'index']);
     Route::get('/places/{id}', [placesController::class, 'show']);
+    Route::get('/places/{id}/{places:slug}', [placesController::class, 'show']);
 
 // End Places
 
@@ -185,6 +188,10 @@ Route::get('/my-wallet', [UserController::class, 'my_wallet'])->name('my_wallet'
 
 Route::post('add-testimonials',[mainController::class, 'add_testimonials'])->name('add_testimonials');
 
+Route::get('/Favorit/{id}', [placesController::class, 'Favorit'])->name('Favorit');
+
+
+
 });
 
 //Start get Data Ajax Place
@@ -211,3 +218,35 @@ Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPa
 Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 // End forget-password
+
+
+// Start  Filtter Products
+Route::post('filtter_products', [productsController::class, 'filtter_products'])->name('site.filtter_products');
+Route::get('filtter_products', [productsController::class, 'filtter_products'])->name('site.filtter_products');
+// End  Filtter Products
+// Start  Filtter Places
+Route::post('filtter_places', [placesController::class, 'filtter_places'])->name('site.filtter_places');
+Route::get('filtter_places', [placesController::class, 'filtter_places'])->name('site.filtter_places');
+// End  Filtter Places
+
+// Start Comment In Places
+Route::post('/comment/store', [CommentController::class,'store'])->name('comment.add');
+Route::post('/reply/store', [CommentController::class,'replyStore'])->name('reply.add');
+// End Comment In Places
+
+
+// Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+//     return Inertia::render('Dashboard');
+// })->name('dashboard');
+
+
+
+// Start Login With Social
+Route::get('/auth/google/redirect',[googleController::class,'handleGoogleRedirect']);
+Route::get('/auth/google/callback',[googleController::class,'handleGoogleCallback']);
+Route::get('/auth/facebook/redirect', [SocialController::class, 'facebookRedirect']);
+Route::get('/auth/facebook/callback', [SocialController::class, 'loginWithFacebook']);
+
+Route::get('/auth/facebook/redirect',[FacebookController::class,'handleFacebookRedirect']);
+Route::get('/auth/facebook/callback',[FacebookController::class,'handleFacebookCallback']);
+// End Login With Social

@@ -4,9 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use ChristianKuri\LaravelFavorite\Traits\Favoriteable;
 
 class Place extends Model
 {
+    use Favoriteable;
+
     public $table = "places";
 
     public $fillable =['id','name_ar','name_en','logo','cover','description','phone','email','address','latitude','longitude',
@@ -19,6 +22,11 @@ class Place extends Model
                             'places.location_id', 'locations.name as location_name' , 'places.Category_id', 'category.name as Category_name' , 'places.user_id', 'places.features', 'places.state', 'places.created_at')
                      ->join('locations' , 'places.location_id' ,'=', 'locations.id')
                      ->join('category' , 'places.Category_id' ,'=', 'category.id');
+    }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable')->whereNull('parent_id');
     }
 
 }

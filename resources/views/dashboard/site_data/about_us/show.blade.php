@@ -46,9 +46,28 @@
                                             @csrf
 
                                             <div class="form-group">
+                                                <label for="projectinput1">  اسم الشركة </label>
+                                                <input type="text" id="name"  name="name" class="form-control" value="{{$data->name}}">
+
+                                                @error("name")
+                                                <span class="text-danger"> {{$message}}</span>
+                                                @enderror
+                                            </div><br>
+
+                                            <div class="form-group">
+                                                <label for="projectinput1">  صوره الخلفيه\صوره الفيديو  </label>
+                                                <img src="{{ asset('uploads/about_us/'.$data->image)}}" width="150px" height="150px">
+                                                <input type="file" id="image"  name="image" class="form-control" value="{{$data->image}}">
+
+                                                @error("image")
+                                                <span class="text-danger"> {{$message}}</span>
+                                                @enderror
+                                            </div><br>
+
+                                            <div class="form-group">
                                                 <label for="projectinput1">  البريد الألكترونى</label>
                                                 <input type="text" id="email"  name="email" class="form-control" value="{{$data -> email}}">
-                                                       
+
                                                 @error("email")
                                                 <span class="text-danger"> {{$message}}</span>
                                                 @enderror
@@ -57,7 +76,7 @@
                                             <div class="form-group">
                                                 <label for="projectinput1"> رقم الهاتف</label>
                                                 <input type="text" id="phone"  name="phone" class="form-control" value="{{$data -> phone}}">
-                                                       
+
                                                 @error("phone")
                                                 <span class="text-danger"> {{$message}}</span>
                                                 @enderror
@@ -66,7 +85,7 @@
                                             <div class="form-group">
                                                 <label for="projectinput1"> العنوان </label>
                                                 <input type="text" id="address"  name="address" class="form-control" value="{{$data ->  address}}">
-                                                       
+
                                                 @error("address")
                                                 <span class="text-danger"> {{$message}}</span>
                                                 @enderror
@@ -75,39 +94,39 @@
                                             <div class="form-group">
                                                 <label for="projectinput1"> فيسبوك </label>
                                                 <input type="text" id="facbook"  name="facbook" class="form-control" value="{{$data -> facbook}}">
-                                                       
+
                                                 @error("facbook")
                                                 <span class="text-danger"> {{$message}}</span>
                                                 @enderror
-                                            </div> <br>                                       
+                                            </div> <br>
 
                                             <div class="form-group">
                                                 <label for="projectinput1"> انستجرام  </label>
                                                 <input type="text" id="instgram"  name="instgram" class="form-control" value="{{$data -> instgram}}">
-                                                       
+
                                                 @error("instgram")
                                                 <span class="text-danger"> {{$message}}</span>
                                                 @enderror
-                                            </div> <br> 
+                                            </div> <br>
 
                                             <div class="form-group">
                                                 <label for="projectinput1"> رقم واتساب  </label>
                                                 <input type="text" id="whatsApp"  name="whatsApp" class="form-control" value="{{$data -> whatsApp}}">
-                                                       
+
                                                 @error("whatsApp")
                                                 <span class="text-danger"> {{$message}}</span>
                                                 @enderror
-                                            </div> <br> 
-                                            
+                                            </div> <br>
+
                                             <div class="form-group">
                                                 <label for="projectinput1"> من نحن  </label>
-                                                <textarea rows="10" cols="10" id="about_data"  name="about_data" class="form-control"> {{$data -> about_data}}</textarea>
+                                                <textarea rows="10" cols="10" id="about_data"  name="about_data" class="form-control"> {{$data->about_data}}</textarea>
 
-                                                       
+
                                                 @error("about_data")
                                                 <span class="text-danger"> {{$message}}</span>
                                                 @enderror
-                                            </div> <br> 
+                                            </div> <br>
 
                                             <div class="form-actions">
                                                 <button type="button" class="btn btn-warning mr-1"
@@ -120,8 +139,8 @@
                                             </div>
                                         </form>
 
-                                        
-                                    
+
+
                                     </div>
                                 </div>
                             </div>

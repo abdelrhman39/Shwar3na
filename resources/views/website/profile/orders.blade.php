@@ -208,7 +208,7 @@
             cursor: pointer;
             margin-top: 10px;
         }
-    </style>collapseWallet
+    </style>
     <script>
         function BtnCollapseExample(){
             document.getElementById('collapseWallet').style.display ="none";

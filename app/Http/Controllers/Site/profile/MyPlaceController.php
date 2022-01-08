@@ -93,6 +93,7 @@ class MyPlaceController extends Controller
         $add->user_id = $request->user_id;
         $add->features = 0;
         $add->state = "wait";
+        $add->slug = Str::slug($request->name_ar);
         $add->created_at = $dateTime;
         $add->save();
 

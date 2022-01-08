@@ -9,11 +9,13 @@ use App\Models\SubCategory;
 use App\Models\AboutUs;
 use Auth;
 use App\Models\Place;
+use App\Models\Product;
 use App\Models\PlaceTags;
 use App\Models\OrdersProducts;
 use App\Models\OrdersCoupons;
 use App\Models\Testimonials;
-
+use App\Models\User;
+use App\Models\TeamShwar3na;
 
 
 class mainController extends Controller
@@ -23,8 +25,11 @@ class mainController extends Controller
     public function homePage(){
 
         $all_category = Category::Selection()->get();
+       AboutUs::Select()->where('id',1)->increment('views');
+
 
         $about_data = AboutUs::first();
+
 
         if(Auth::user() != NULL){
             $order_count = OrdersProducts::select()
@@ -44,7 +49,8 @@ class mainController extends Controller
 
 
 
-            return view('website.Home.index', ['count_orders'=>$count_orders,'all_category' => $all_category, 'about_data' =>  $about_data]);
+            return view('website.Home.index', ['count_orders'=>$count_orders,'all_category' => $all_category,
+                            'about_data' =>  $about_data]);
 
         }
 
@@ -64,12 +70,27 @@ class mainController extends Controller
         return redirect('/index');
     }
 
-    public function contactUs(){
+    public function about_us(){
+        $all_category = Category::Selection()->get();
+        $about_data = AboutUs::first();
+        $products = Product::Select()->get();
+        $places = Place::Select()->get();
+        $users = User::Select()->get();
+        $team = TeamShwar3na::get();
+        $testimonials = Testimonials::
+        join('users','users.id','=','testimonials.user_id')
+        ->select('users.name','users.image','testimonials.*')->where('is_active',1)->get();
+
+        return view('website.aboutUs.about_us', ['all_category' => $all_category, 'about_data' => $about_data,
+        'products'=>$products,'places'=>$places,'users'=>$users,'team'=>$team,'testimonials'=>$testimonials]);
+    }
+
+    public function contact_us(){
         $all_category = Category::Selection()->get();
 
         $about_data = AboutUs::first();
 
-        return view('website.aboutUs.contact', ['all_category' => $all_category, 'about_data' => $about_data]);
+        return view('website.contactUs.contact_us', ['all_category' => $all_category, 'about_data' => $about_data]);
     }
 
     public function search(Request $request)

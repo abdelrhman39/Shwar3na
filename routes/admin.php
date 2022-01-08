@@ -154,6 +154,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function() {
 
     // Start Wallet
     Route::post('add-Money/{id}', [UserController::class, 'addMoney'])->name('admin.addMoney');
+    Route::get('All-wallet', [SiteDataController::class, 'all_wallet'])->name('admin.All-wallet');
 
     // End Wallet
 

@@ -97,9 +97,6 @@ class productsController extends Controller
      */
     public function show($id)
     {
-
-
-
         $data = Product::Select()
         ->join('places' , 'places.id','=','products.place_id')
         ->select('products.*','places.id as place_id_as','places.name_ar','places.logo')
@@ -163,8 +160,44 @@ class productsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function filtter_products(Request $request)
     {
-        //
+        $data = Product::Select()
+        ->join('places' , 'places.id','=','products.place_id')
+        ->select('products.*','places.id as place_id_as','places.name_ar','places.logo')
+        ->where('products.is_active','1')
+        ->where('places.Category_id',$request->Category_id)
+        ->whereBetween('products.new_price' ,[$request->range_from,$request->range_to])->paginate(6);
+
+        $range_from  = $request->range_from;
+        $range_to    = $request->range_to;
+        $Category_id = $request->Category_id;
+
+            $all_category = Category::Selection()->get();
+
+            $about_data = AboutUs::first();
+
+            if(Auth::user() != NULL){
+                $order_count = OrdersProducts::select()
+                ->join('products','products.id','=','orders_products.product_id')
+                ->join('users','users.id','=','orders_products.user_id')
+                ->where('user_id',Auth::user()->id)
+                ->where('orders_products.order_don',0)->get();
+
+                $orders_coupons  = OrdersCoupons::select()
+                ->join('place_discounts','place_discounts.id','=','orders_coupons.discounts_id')
+                ->join('users','users.id','=','orders_coupons.user_id')
+                ->select('orders_coupons.*','users.id as user_id','place_discounts.text','place_discounts.title','place_discounts.image',
+                'place_discounts.code','place_discounts.old_price','place_discounts.new_price','place_discounts.expired_date')
+                ->where('user_id',Auth::user()->id)->get();
+
+                $count_orders= count($order_count)+ count($orders_coupons);
+                return view('website.products.index', ['count_orders'=>$count_orders,'data' => $data,'all_category' => $all_category,'about_data' =>  $about_data,
+                'range_from'=>$range_from,'range_to'=>$range_to,'Category_id'=>$Category_id]);
+
+            }
+
+            return view('website.products.index', ['data' => $data,'all_category' => $all_category,'about_data' =>  $about_data,
+            'range_from'=>$range_from,'range_to'=>$range_to,'Category_id'=>$Category_id]);
     }
 }

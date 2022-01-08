@@ -25,12 +25,9 @@
                                             <div class="col-md-4 text-right">
                                                 <div class="list-single-header-item-opt fl-wrap">
                                                     <div class="list-single-header-cat fl-wrap">
-                                                        @if ($data[0]->new_price >= 0)
-                                                            @if ($data[0]->old_price < $data[0]->new_price)
-                                                            <a href="#">{{ $data[0]->new_price }} $</a>
-                                                            @else
-                                                                <a href="#">{{ $data[0]->old_price }} $</a>
-                                                            @endif
+
+                                                        @if ($data[0]->new_price != Null)
+                                                        <a href="#">{{ $data[0]->new_price }} $</a>
                                                         @else
                                                             <a href="#">{{ $data[0]->old_price }} $</a>
                                                         @endif

@@ -50,6 +50,7 @@
                                                 <th>الصورة</th>
                                                 <th>الاسم</th>
                                                 <th>الوظيفة</th>
+                                                <th>الوصف</th>
                                                 <th>الفيس بوك</th>
                                                 <th>التويتر</th>
                                                 <th>تم انشاءة في</th>
@@ -62,6 +63,7 @@
                                                 <td><img src="{{ url('uploads/team/'.$one->image) }}" width="150px" height="150px"/></td>
                                                 <td>{{ $one->name }}</td>
                                                 <td>{{ $one->title}}</td>
+                                                <td data-toggle="tooltip" data-placement="bottom" title="{{ $one->description }}">{{ substr($one->description,0,30) }}....</td>
                                                 <td>{{ $one->facebook }}</td>
                                                 <td>{{ $one->twitter }}</td>
                                                 <td>{{ $one->created_at }}</td>
@@ -102,26 +104,49 @@
           <div class="form-group">
             <label for="recipient-name" class="col-form-label">الاسم:</label>
             <input type="text" name="name" class="form-control" id="recipient-name">
+            @error("name")
+                <span class="text-danger"> {{$message}}</span>
+            @enderror
           </div>
 
           <div class="form-group">
             <label for="message-text" class="col-form-label">الوظيفة:</label>
             <input type="text" name="title" class="form-control" id="recipient-name">
+            @error("title")
+                <span class="text-danger"> {{$message}}</span>
+            @enderror
           </div>
 
           <div class="form-group">
             <label for="message-text" class="col-form-label">الصورة:</label>
             <input type="file" name="image" class="form-control" id="recipient-name">
+            @error("image")
+                <span class="text-danger"> {{$message}}</span>
+            @enderror
+          </div>
+
+          <div class="form-group">
+            <label for="message-text" class="col-form-label">الوصف:</label>
+            <textarea class="form-control" rows="6" name="description" ></textarea>
+            @error("description")
+                <span class="text-danger"> {{$message}}</span>
+            @enderror
           </div>
 
           <div class="form-group">
             <label for="message-text" class="col-form-label">الفيس بوك:</label>
             <input type="text" name="facebook" class="form-control" id="recipient-name">
+            @error("facebook")
+                <span class="text-danger"> {{$message}}</span>
+            @enderror
           </div>
 
           <div class="form-group">
             <label for="message-text" class="col-form-label">تويتر :</label>
             <input type="text" name="twitter" class="form-control" id="recipient-name">
+            @error("twitter")
+                <span class="text-danger"> {{$message}}</span>
+            @enderror
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">الغاء</button>

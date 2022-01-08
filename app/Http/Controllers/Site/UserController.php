@@ -38,6 +38,7 @@ class UserController extends Controller
 
 
         $all_category = Category::Selection()->get();
+        AboutUs::Select()->where('id',1)->increment('views');
 
         $about_data =  AboutUs::first();
         if(Auth::user() != NULL){

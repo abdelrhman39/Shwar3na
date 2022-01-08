@@ -72,76 +72,76 @@
                                             </div>
                                         </div>
 
-                                        <table class="table display nowrap table-striped table-bordered scroll-horizontal">
-                                            <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>الصورة</th>
-                                                <th> الاسم</th>
-                                                <th> التليفون</th>
-                                                <th> البريد الألكترونى </th>
-                                                <th> وقت الأنشاء</th>
 
-                                                <th>الإجراءات</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
+                                        <div class="" style="overflow-x:scroll">
+                                            <table class="scroll-horizontal table display nowrap table-striped  table-bordered scroll-horizontal" id="example">
+                                                <thead>
+                                                <tr>
+                                                    <th>id</th>
+                                                    <th>الصورة</th>
+                                                    <th> الاسم</th>
+                                                    <th> التليفون</th>
+                                                    <th> البريد الألكترونى </th>
+                                                    <th> وقت الأنشاء</th>
 
-                                            @isset($data)
-                                                @foreach($data as $each)
-                                                    <tr>
-                                                        <td>{{$each -> id}}</td>
-                                                        <td> <img class="rounded-circle " style="width: 70px; height: 70px;" src="{{ url('/uploads/users/'.$each->image)}}"></td>
-                                                        <td>{{$each -> name}}</td>
-                                                        <td>{{$each -> phone}}</td>
-                                                        <td>{{$each -> email}}</td>
-                                                        <td>{{$each -> created_at}}</td>
-                                                        <td>
-                                                            <div class="btn-group" role="group" aria-label="Basic example">
+                                                    <th>الإجراءات</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
 
-                                                                {{--  <a href="{{route('admin.destroy.user', $each -> id)}}"
-                                                                    class="btn btn-outline-danger btn-min-width box-shadow-3  mr-1 mb-1">حذف</a>  --}}
-                                                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addMoney{{$each->id}}" data-whatever="@mdo">اضافة رصيد</button>
+                                                @isset($data)
+                                                    @foreach($data as $each)
+                                                        <tr>
+                                                            <td>{{$each->id}}</td>
+                                                            <td> <img class="rounded-circle " style="width: 70px; height: 70px;" src="{{ url('/uploads/users/'.$each->image)}}"></td>
+                                                            <td>{{$each->name}}</td>
+                                                            <td>{{$each->phone}}</td>
+                                                            <td>{{$each->email}}</td>
+                                                            <td>{{$each->created_at}}</td>
+                                                            <td>
+                                                                <div class="btn-group" role="group" aria-label="Basic example">
 
-                                                                    <div class="modal fade" id="addMoney{{$each->id}}" tabindex="-1" role="dialog" aria-labelledby="addMony" aria-hidden="true">
-                                                                    <div class="modal-dialog" role="document">
-                                                                        <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <h5 class="modal-title" id="exampleModalLabel"> اضافة رصيد ل {{$each->name}}</h5>
-                                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                            </button>
-                                                                        </div>
-                                                                        <form action="{{route('admin.addMoney',$each->id)}}" method="POST">
-                                                                            @csrf
-                                                                            <div class="modal-body">
+                                                                    {{--  <a href="{{route('admin.destroy.user', $each -> id)}}"
+                                                                        class="btn btn-outline-danger btn-min-width box-shadow-3  mr-1 mb-1">حذف</a>  --}}
+                                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addMoney{{$each->id}}" data-whatever="@mdo">اضافة رصيد</button>
 
-                                                                                <div class="form-group">
-                                                                                    <label for="recipient-name" class="col-form-label">المال ( جنيه )</label>
-                                                                                    <input type="number" class="form-control" name="money" id="recipient-name"  required>
-                                                                                    <input type="hidden" name="user_email" value="{{ $each->email }}"/>
+                                                                        <div class="modal fade" id="addMoney{{$each->id}}" tabindex="-1" role="dialog" aria-labelledby="addMony" aria-hidden="true">
+                                                                        <div class="modal-dialog" role="document">
+                                                                            <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title" id="exampleModalLabel"> اضافة رصيد ل {{$each->name}}</h5>
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <form action="{{route('admin.addMoney',$each->id)}}" method="POST">
+                                                                                @csrf
+                                                                                <div class="modal-body">
+
+                                                                                    <div class="form-group">
+                                                                                        <label for="recipient-name" class="col-form-label">المال ( جنيه )</label>
+                                                                                        <input type="number" class="form-control" name="money" id="recipient-name"  required>
+                                                                                        <input type="hidden" name="user_email" value="{{ $each->email }}"/>
+                                                                                    </div>
+
                                                                                 </div>
-
+                                                                                <div class="modal-footer">
+                                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
+                                                                                    <button type="submit" class="btn btn-primary">شحن</button>
+                                                                                </div>
+                                                                            </form>
                                                                             </div>
-                                                                            <div class="modal-footer">
-                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">إلغاء</button>
-                                                                                <button type="submit" class="btn btn-primary">شحن</button>
-                                                                            </div>
-                                                                        </form>
                                                                         </div>
-                                                                    </div>
-                                                                    </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            @endisset
+                                                                        </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @endisset
 
 
-                                            </tbody>
-                                        </table>
-                                        <div class="justify-content-center d-flex">
-
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -152,4 +152,63 @@
             </div>
         </div>
     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    $(document).ready(function () {
+	//Only needed for the filename of export files.
+	//Normally set in the title tag of your page.
+	document.title = "Card View DataTable";
+	// DataTable initialisation
+	$("#example").DataTable({
+		dom: '<"dt-buttons"Bf><"clear">lirtp',
+		paging: true,
+		autoWidth: true,
+		buttons: [
+			"colvis",
+			"copyHtml5",
+			"csvHtml5",
+			"excelHtml5",
+			"pdfHtml5",
+			"print"
+		],
+		initComplete: function (settings, json) {
+
+			$("#cv").on("click", function () {
+				if ($("#example").hasClass("card")) {
+					$(".colHeader").remove();
+				} else {
+					var labels = [];
+					$("#example thead th").each(function () {
+						labels.push($(this).text());
+					});
+					$("#example tbody tr").each(function () {
+						$(this)
+							.find("td")
+							.each(function (column) {
+								$("<span class='colHeader'>" + labels[column] + ":</span>").prependTo(
+									$(this)
+								);
+							});
+					});
+				}
+				$("#example").toggleClass("card");
+			});
+		}
+	});
+});
+
+</script>
+
+
 @endsection

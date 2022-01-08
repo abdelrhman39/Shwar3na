@@ -57,7 +57,7 @@
 
                                         <div class="card-group">
                                             <div class="card">
-                                                <div class="logo"><img src="http://localhost/shwar3na_laravel/uploads/Logo(light).png" alt="Visa"></div>
+                                                <div class="logo"><img src="{{ url('uploads/Logo(light).png') }}" alt="Visa"></div>
                                                 <div class="chip"><img src="https://raw.githubusercontent.com/dasShounak/freeUseImages/main/chip.png" alt="chip"></div>
                                                 <div class="number">Card Number {{ Auth::user()->id }}</div>
                                                 <div class="name">{{ Auth::user()->name }}</div>

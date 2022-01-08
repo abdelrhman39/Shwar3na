@@ -53,14 +53,17 @@
                      <span class="menu-title" data-i18n="nav.dash.main">تفاصيل الموقع </span>
                      </a>
                      <ul class="menu-content">
-                     <li class="{{  request()->routeIs('admin.aboutus') ? 'active' : '' }} "><a class="menu-item" href="{{route('admin.aboutus')}}" data-i18n="nav.dash.ecommerce"> عن الشركة </a>
-                     </li>
-                      <li><a class="menu-item {{  request()->routeIs('admin.team') ? 'active' : '' }} " href="{{route('admin.team')}}" data-i18n="nav.dash.crypto">أضافة
-                            فريق </a>
-                     </li>
-                     <li><a class="menu-item {{  request()->routeIs('admin.testimonials') ? 'active' : '' }} " href="{{route('admin.testimonials')}}" data-i18n="nav.dash.crypto">
-                        رأي العملاء في شوراعنا </a>
-                 </li>
+                        <li class="{{  request()->routeIs('admin.aboutus') ? 'active' : '' }} "><a class="menu-item" href="{{route('admin.aboutus')}}" data-i18n="nav.dash.ecommerce"> عن الشركة </a>
+                        </li>
+                        <li><a class="menu-item {{  request()->routeIs('admin.team') ? 'active' : '' }} " href="{{route('admin.team')}}" data-i18n="nav.dash.crypto">أضافة
+                                فريق </a>
+                        </li>
+                        <li><a class="menu-item {{  request()->routeIs('admin.testimonials') ? 'active' : '' }} " href="{{route('admin.testimonials')}}" data-i18n="nav.dash.crypto">
+                            رأي العملاء في شوراعنا </a>
+                        </li>
+                        <li><a class="menu-item {{  request()->routeIs('admin.All-wallet') ? 'active' : '' }} " href="{{route('admin.All-wallet')}}" data-i18n="nav.dash.crypto">
+                            كل العمليات المالية </a>
+                        </li>
                      </ul>
               </li>
 

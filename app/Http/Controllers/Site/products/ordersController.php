@@ -93,6 +93,7 @@ class ordersController extends Controller
 
         OrdersProducts::create($validated);
 
+
         return redirect(url('products/'.$validated['product_id']))->with('success' , "تم أضافه المنتج بنجاح");
 
     }
@@ -244,10 +245,14 @@ class ordersController extends Controller
 
 
         if($validated['wallet']){
+
             $user = User::where('id',$validated['user_id'])->first();
-            $shwar3na = Admin::where('name','admin')
-            ->where('email','admin@gmail.com')
-            ->where('phone','0124587452')->first();
+            $shwar3na = Admin::where('name','shwar3na')
+            ->where('email','eng.a.mohammed89@gmail.com')
+            ->where('phone','01111319393')->first();
+
+            $user->wallet->refreshBalance();
+            $shwar3na->wallet->refreshBalance();
 
             if($user->balance > $request->total){
                 $result_transfer = $user->transfer($shwar3na, $request->total);
@@ -262,7 +267,7 @@ class ordersController extends Controller
                             $result->user_id      = $validated['user_id'];
                             $result->order_id     = $orderID;
                             $result->type         = $validated['type'];
-                            $result->order_number = $validated['order_number'];
+                            $result->order_number = $result_transfer->uuid;
                             $result->address      = $validated['address'];
                             $result->state        = '';
                             // $result->place_id = $request->place_id[$i];
@@ -390,6 +395,26 @@ class ordersController extends Controller
         $all_category = Category::Selection()->get();
 
         $about_data = AboutUs::first();
+
+        $Order_don = Order_don::where('id' , $orderID)->first();
+        $order_id  = OrdersProducts::where('id' , $orderID)->first();
+        $price_product = Product::where('id' , $order_id->product_id)->first();
+        $pric = 0;
+        if ($price_product->new_price != Null){
+            $pric = $price_product->new_price ;
+        }else{
+            $pric = $price_product->old_price;
+        }
+        $user = User::where('id',$Order_don->user_id)->first();
+        $shwar3na = Admin::where('name','shwar3na')
+        ->where('email','eng.a.mohammed89@gmail.com')
+        ->where('phone','01111319393')->first();
+
+        $user->wallet->refreshBalance();
+        $shwar3na->wallet->refreshBalance();
+
+        $result_transfer = $shwar3na->transfer($user, $pric);
+
 
         $count_order = OrdersProducts::select()
             ->join('products','products.id','=','orders_products.product_id')

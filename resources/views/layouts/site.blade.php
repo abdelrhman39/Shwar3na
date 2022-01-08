@@ -38,6 +38,29 @@
     })();
     </script>
     <!--End of Tawk.to Script-->
+
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '{your-app-id}',
+      cookie     : true,
+      xfbml      : true,
+      version    : '{api-version}'
+    });
+
+    FB.AppEvents.logPageView();
+
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
 </head>
 
 <body>
@@ -84,7 +107,7 @@
                     <div class="header-user-menu">
                         <div class="header-user-name">
                             <span><img src="{{ url('uploads/users/'.auth::User()->image) }}" alt=""></span>
-                            {{Auth::User()->name}}
+                            {{ substr(Auth::User()->name,0,15)}}...
                         </div>
                         <ul>
                             <li><a href="{{route('site.profile.dash')}}"> الصفحة الشخصية</a></li>
@@ -175,7 +198,7 @@
                                 <a href="#">عن الشركة <i class="fa fa-caret-down"></i></a>
                                 <!--second level -->
                                 <ul>
-                                    <li><a href="blog.html">عن الشركة</a></li>
+                                    <li><a href="{{route('site.aboutUs')}}">عن الشركة</a></li>
                                     <li><a href="{{route('site.contactUs')}}">تواصل معنا </a></li>
 
                                 </ul>
@@ -223,6 +246,13 @@
                     {{--  @include('dashboard.includes.alerts.errors')
                     @include('dashboard.includes.alerts.success')   --}}
                     <div id="tabs-container">
+                        <div class="soc-log fl-wrap">
+                            <p>For faster login or register use your social account.</p>
+                            <a href="{{ url('auth/facebook/redirect') }}" class="facebook-log"><i class="fa fa-facebook-official"></i>Log in with Facebook</a>
+                            <a href="{{ url('/auth/google/redirect') }}" class="twitter-log" style="background: #c94130"><i class="fa fa-google"></i> Log in with Twitter</a>
+                        </div>
+                        <div class="log-separator fl-wrap"><span>or</span></div>
+
                         <ul class="tabs-menu" >
                             <li class="current" style="float: right" ><a href="#tab-1">تسجيل دخول</a></li>
                             <li style="float: right"><a href="#tab-2">تسجيل حساب</a></li>
@@ -256,6 +286,7 @@
                                         <div class="filter-tags">
                                             <a href="{{ route('forget.password.get') }}">Forgot Password</a>
                                         </div>
+
                                     </form>
                                     {{--  <div class="lost_password">
                                         <a href="#">Lost Your Password?</a>
@@ -313,6 +344,7 @@
                                         </form>
                                     </div>
                                 </div>
+
                             </div>
 
 

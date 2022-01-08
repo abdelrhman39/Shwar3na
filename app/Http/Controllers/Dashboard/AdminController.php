@@ -40,10 +40,11 @@ class AdminController extends Controller
         ->select('orders_don.*','orders_products.quantity','products.name As product_name','orders_products.place_id','products.old_price','products.new_price','products.main_image' ,'users.name')
         ->where('orders_don.type','product')->get();
 
-        $shwar3na = Admin::where('name','admin')
-            ->where('email','admin@gmail.com')
-            ->where('phone','0124587452')->first();
+        $shwar3na = Admin::where('name','shwar3na')
+        ->where('email','eng.a.mohammed89@gmail.com')
+        ->where('phone','01111319393')->first();
 
+        $shwar3na->wallet->refreshBalance();
         $money_shwar3na = $shwar3na->balance;
 
 

@@ -44,11 +44,17 @@ class placesController extends Controller
             ->select('places.*', 'category.name As category_name')
             ->where('places.state' , 'accept')->Paginate(6);
 
-
-
             $all_category = Category::Selection()->get();
 
             $about_data = AboutUs::first();
+
+            foreach($data as $fav){
+                $favorite = Place::find($fav->id)->favoritesCount;
+            }
+
+
+
+
             if(Auth::user() != NULL){
                 $order_count = OrdersProducts::select()
                 ->join('products','products.id','=','orders_products.product_id')
@@ -64,11 +70,12 @@ class placesController extends Controller
                 ->where('user_id',Auth::user()->id)->get();
 
                 $count_orders= count($order_count)+ count($orders_coupons);
-                return view('website.places.index', ['count_orders'=>$count_orders,'data' => $data,'all_category' => $all_category,'about_data' =>  $about_data]);
+                return view('website.places.index', ['count_orders'=>$count_orders,'data' => $data,
+                                                'all_category' => $all_category,'about_data' =>  $about_data,'favorite'=>$favorite]);
 
             }
 
-            return view('website.places.index', ['data' => $data,'all_category' => $all_category,'about_data' =>  $about_data]);
+            return view('website.places.index', ['data' => $data,'all_category' => $all_category,'about_data' =>  $about_data,'favorite'=>$favorite]);
     }
 
     /**
@@ -104,13 +111,30 @@ class placesController extends Controller
         $all_category = Category::Selection()->get();
 
         $about_data = AboutUs::first();
-
+        $users = User::get();
         Place::Select()->where('id',$id)->increment('views');
+
+
         $data = Place::Select()
             ->join('category', 'places.Category_id', '=', 'category.id')
             ->join('users', 'places.user_id', '=', 'users.id')
-            ->select('places.*',  'category.name As category_name','users.*')
+            ->select('places.*',  'category.name As category_name','users.id as user_id','users.name','users.image as img_user')
             ->where('places.id',$id)->get();
+
+        $place = Place::find($id);
+
+        if(Auth::user()){
+            $user = User::find(Auth::user()->id);
+
+            $user->favorite($place);
+
+
+            if(count($user->favorite(Place::class)) > 0){
+                $data[0]['favorite']=1;
+            }else{
+                $data[0]['favorite']=0;
+            }
+        }
 
 
 
@@ -159,12 +183,14 @@ class placesController extends Controller
                                                              'place_products'=>$place_products,
                                                              'place_job'=>$place_job,
                                                              'place_gallary' =>$place_gallary,'place_tags'=>$PlaceTags,
-                                                             'all_category' => $all_category,'about_data' =>  $about_data]);
+                                                             'all_category' => $all_category,'about_data' =>  $about_data,'users'=>$users]);
             }
 
 
 
-        return view('website.places.details_place', ['data' => $data,'place_time' => $place_time,'place_disc'=>$place_disc,'place_products'=>$place_products,'place_job'=>$place_job,'place_gallary' =>$place_gallary,'place_tags'=>$PlaceTags,'all_category' => $all_category,'about_data' =>  $about_data]);
+        return view('website.places.details_place', ['data' => $data,'place_time' => $place_time,'place_disc'=>$place_disc,'place_products'=>$place_products,'place_job'=>$place_job,
+                                    'place_gallary' =>$place_gallary,'place_tags'=>$PlaceTags,
+                                    'all_category' => $all_category,'about_data' =>  $about_data,'users'=>$users]);
     }
 
     /**
@@ -178,26 +204,66 @@ class placesController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function filtter_places(Request $request)
     {
-        //
+
+
+        $data = Place::Select()
+            ->join('category', 'places.Category_id', '=', 'category.id')
+            // ->join('users', 'places.user_id', '=', 'users.id')
+            ->select('places.*', 'category.name As category_name')
+            ->where('places.state' , 'accept')
+            ->Where('places.Category_id',$request->Category_id)
+            ->whereBetween('places.price_range' ,[$request->range_from,$request->range_to])
+            ->paginate(6);
+
+        $range_from  = $request->range_from;
+        $range_to    = $request->range_to;
+        $Category_id = $request->Category_id;
+        $Keywords    = $request->Keywords;
+
+            $all_category = Category::Selection()->get();
+
+            $about_data = AboutUs::first();
+
+            if(Auth::user() != NULL){
+                $order_count = OrdersProducts::select()
+                ->join('products','products.id','=','orders_products.product_id')
+                ->join('users','users.id','=','orders_products.user_id')
+                ->where('user_id',Auth::user()->id)
+                ->where('orders_products.order_don',0)->get();
+
+                $orders_coupons  = OrdersCoupons::select()
+                ->join('place_discounts','place_discounts.id','=','orders_coupons.discounts_id')
+                ->join('users','users.id','=','orders_coupons.user_id')
+                ->select('orders_coupons.*','users.id as user_id','place_discounts.text','place_discounts.title','place_discounts.image',
+                'place_discounts.code','place_discounts.old_price','place_discounts.new_price','place_discounts.expired_date')
+                ->where('user_id',Auth::user()->id)->get();
+
+                $count_orders= count($order_count)+ count($orders_coupons);
+                return view('website.places.index', ['count_orders'=>$count_orders,'data' => $data,'all_category' => $all_category,'about_data' =>  $about_data,
+                'range_from'=>$range_from,'range_to'=>$range_to,'Category_id'=>$Category_id,'Keywords'=>$Keywords]);
+
+            }
+
+            return view('website.places.index', ['data' => $data,'all_category' => $all_category,'about_data' =>  $about_data,
+            'range_from'=>$range_from,'range_to'=>$range_to,'Category_id'=>$Category_id,'Keywords'=>$Keywords]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+
+    public function Favorit($id)
     {
-        //
+        $place = Place::find($id);
+        $user = User::find(Auth::user()->id);
+
+        $user->favorite($place);
+
+
+        if(count($user->favorite(Place::class)) > 0){
+            return redirect()->back()->with(['error'=>'لقت قمت بإضافة هذا المحل من قبل ']);
+        }else{
+            $user->addFavorite($place); // The user added to favorites this post
+            return redirect()->back()->with(['success'=>'تم اضافة المحل في المفضله']);
+        }
     }
 }

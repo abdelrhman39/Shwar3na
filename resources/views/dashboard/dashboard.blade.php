@@ -100,7 +100,7 @@
                         <div class="card-body">
                           <div class="media d-flex">
                             <div class="media-body text-left">
-                              <h3 class="danger">{{ $money_shwar3na }}</h3>
+                              <h3 class="danger">{{ $money_shwar3na }} $</h3>
                               <h6>فلوس شوارعنا</h6>
                             </div>
                             <div>

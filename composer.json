@@ -8,17 +8,24 @@
         "php": "^7.3|^8.0",
         "algolia/algoliasearch-client-php": "^3.1",
         "bavix/laravel-wallet": "^6.1",
+        "christiankuri/laravel-favorite": "^1.4",
         "emotality/tawk-laravel": "^2.1",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "http-interop/http-factory-guzzle": "^1.2",
+        "inertiajs/inertia-laravel": "^0.4.3",
         "laravel/framework": "^8.12",
+        "laravel/jetstream": "^2.5",
+        "laravel/sanctum": "^2.13",
         "laravel/scout": "^9.3",
+        "laravel/socialite": "^5.2",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
+        "livewire/livewire": "^2.5",
         "maatwebsite/excel": "^3.1",
         "meilisearch/meilisearch-php": "^0.20.0",
+        "tightenco/ziggy": "^1.0",
         "tymon/jwt-auth": "^1.0"
     },
     "require-dev": {
@@ -61,7 +68,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true
